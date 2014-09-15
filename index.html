@@ -17,11 +17,13 @@
 <body>
 
 <div id='container'>
-
+  <a href="login.php">Login</a>
   <div id='videos'>
     <video id='localVideo' autoplay muted></video>
     <video id='remoteVideo' autoplay></video>
   </div>
+  
+  <button id="audio">Enable Audio</button>
 
   <div id='textareas'>
 		<textarea id="dataChannelSend" disabled placeholder="Press Start, enter some text, then press Send."></textarea>
@@ -32,10 +34,10 @@
 
 </div>
 
-<script src='/socket.io/socket.io.js'></script>
+<script src='socket.io/socket.io.js'></script>
 <script src='js/lib/adapter.js'></script>
 <script src='js/main.js'></script>
-<script src='js/data.js'></script>
+<!-- <script src='js/data.js'></script> -->
 
 </body>
 </html>

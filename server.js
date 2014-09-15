@@ -40,7 +40,7 @@ io.sockets.on('connection', function (socket){
 		if (numClients === 0){
 			socket.join(room);
 			socket.emit('created', room);
-		} else if (numClients === 1) {
+		} else if (numClients <= 5) {
 			io.sockets.in(room).emit('join', room);
 			socket.join(room);
 			socket.emit('joined', room);

@@ -32,12 +32,9 @@ var sdpConstraints = {'mandatory': {
 
 /////////////////////////////////////////////
 
-var room = location.pathname.substring(1);
+var room = prompt('Enter room name:'); //location.pathname.substring(1);
 if (room === '') {
-//  room = prompt('Enter room name:');
-  room = 'foo';
-} else {
-  //
+  room = location.pathname.substring(1);
 }
 
 var socket = io.connect();
@@ -79,7 +76,7 @@ function sendMessage(message){
 }
 
 socket.on('message', function (message){
-  console.log('Received message:', message);
+  console.log('Receive message:', message);
   if (message === 'got user media') {
   	maybeStart();
   } else if (message.type === 'offer') {
@@ -118,7 +115,7 @@ function handleUserMediaError(error){
   console.log('getUserMedia error: ', error);
 }
 
-var constraints = {video: true};
+var constraints = {audio: true, video: true};
 
 getUserMedia(constraints, handleUserMedia, handleUserMediaError);
 console.log('Getting user media with constraints', constraints);
@@ -184,25 +181,25 @@ function sendData() {
   trace('Sent data: ' + data);
 }
 
-// function closeDataChannels() {
-//   trace('Closing data channels');
-//   sendChannel.close();
-//   trace('Closed data channel with label: ' + sendChannel.label);
-//   receiveChannel.close();
-//   trace('Closed data channel with label: ' + receiveChannel.label);
-//   localPeerConnection.close();
-//   remotePeerConnection.close();
-//   localPeerConnection = null;
-//   remotePeerConnection = null;
-//   trace('Closed peer connections');
-//   startButton.disabled = false;
-//   sendButton.disabled = true;
-//   closeButton.disabled = true;
-//   dataChannelSend.value = "";
-//   dataChannelReceive.value = "";
-//   dataChannelSend.disabled = true;
-//   dataChannelSend.placeholder = "Press Start, enter some text, then press Send.";
-// }
+function closeDataChannels() {
+  trace('Closing data channels');
+  sendChannel.close();
+  trace('Closed data channel with label: ' + sendChannel.label);
+  receiveChannel.close();
+  trace('Closed data channel with label: ' + receiveChannel.label);
+  localPeerConnection.close();
+  remotePeerConnection.close();
+  localPeerConnection = null;
+  remotePeerConnection = null;
+  trace('Closed peer connections');
+  startButton.disabled = false;
+  sendButton.disabled = true;
+  closeButton.disabled = true;
+  dataChannelSend.value = "";
+  dataChannelReceive.value = "";
+  dataChannelSend.disabled = true;
+  dataChannelSend.placeholder = "Press Start, enter some text, then press Send.";
+ }
 
 function gotReceiveChannel(event) {
   trace('Receive Channel Callback');
