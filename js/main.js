@@ -37,7 +37,7 @@ if (room === '') {
   room = location.pathname.substring(1);
 }
 
-var socket = io.connect();
+var socket = io.connect('http://localhost:2013');
 
 if (room !== '') {
   console.log('Create or join room', room);
