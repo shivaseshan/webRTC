@@ -425,3 +425,44 @@ function removeCN(sdpLines, mLineIndex) {
   return sdpLines;
 }
 
+$( document ).ready(function() {
+  if (localStream == "undefined") {
+    document.getElementById("disable-audio").disabled = true;
+    document.getElementById("disable-video").disabled = true;
+  }
+    
+  $("#disable-audio").on("click", function(){
+    if (localStream != "undefined") {
+      localStream.getAudioTracks()[0].enabled = false;
+      document.getElementById("enable-audio").hidden = false;
+      document.getElementById("disable-audio").hidden =  true;
+    }
+  });
+
+  $("#enable-audio").on("click", function(){
+    if (localStream != "undefined") {
+      localStream.getAudioTracks()[0].enabled = false;
+      document.getElementById("enable-audio").hidden = true;
+      document.getElementById("disable-audio").hidden =  false;
+    }
+  });
+
+  $("#disable-video").on("click", function(){
+    if (localStream != "undefined") {
+      localStream.getVideoTracks()[0].enabled = false;
+      document.getElementById("enable-video").hidden = false;
+      document.getElementById("disable-video").hidden =  true;
+    }
+  });
+
+  $("#enable-video").on("click", function(){
+    if (localStream != "undefined") {
+      localStream.getVideoTracks()[0].enabled = true;
+      document.getElementById("enable-video").hidden = true;
+      document.getElementById("disable-video").hidden =  false;
+    }
+  });
+});
+
+
+

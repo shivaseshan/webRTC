@@ -20,11 +20,13 @@
   <a href="login.php">Login</a>
   <div id='videos'>
     <video id='localVideo' autoplay muted></video>
-    <video id='remoteVideo' autoplay></video>
+    <video id='remoteVideo' autoplay></video>   
   </div>
   
-  <button id="audio">Enable Audio</button>
-
+  <button id="disable-audio">Disable Audio</button>
+  <button id="enable-audio" hidden="hidden">Enable Audio</button>
+  <button id="disable-video">Disable Video</button>
+  <button id="enable-video" hidden="hidden">Enable Video</button>
   <div id='textareas'>
 		<textarea id="dataChannelSend" disabled placeholder="Press Start, enter some text, then press Send."></textarea>
 		<textarea id="dataChannelReceive" disabled></textarea>
@@ -34,10 +36,10 @@
 
 </div>
 
-<script src='socket.io/socket.io.js'></script>
+<script src='js/socket.io/socket.io.js'></script>
 <script src='js/lib/adapter.js'></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src='js/main.js'></script>
-<!-- <script src='js/data.js'></script> -->
 
 </body>
 </html>
