@@ -462,6 +462,13 @@ $( document ).ready(function() {
       document.getElementById("disable-video").hidden =  false;
     }
   });
+
+  $("#snapshot").on("click", function snapshot() {
+    var video = document.getElementById('localVideo');
+    var canvas = document.getElementById('photo');
+    canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+    Canvas2Image.saveAsPNG(canvas);
+  });
 });
 
 
