@@ -9,11 +9,16 @@ sendButton.onclick = sendData;
 
 var isChannelReady;
 var isInitiator;
+var isMember;
+var participantID;
+var isAlreadyOnCall;
 var isStarted;
 var localStream;
 var pc;
 var remoteStream;
 var turnReady;
+var localVideo;
+var remoteVideo;
 
 var pc_config = webrtcDetectedBrowser === 'firefox' ?
   {'iceServers':[{'url':'stun:23.21.150.121'}]} : // number IP
@@ -37,7 +42,7 @@ if (room === '') {
   room = location.pathname.substring(1);
 }
 
-var socket = io.connect('http://localhost:2013');
+var socket = io.connect('http://192.168.0.7:2013');
 
 if (room !== '') {
   console.log('Create or join room', room);
@@ -55,13 +60,20 @@ socket.on('full', function (room){
 
 socket.on('join', function (room){
   console.log('Another peer made a request to join room ' + room);
-  console.log('This peer is the initiator of room ' + room + '!');
+  //console.log('This peer is the initiator of room ' + room + '!');
   isChannelReady = true;
+  isStarted = false;
+  if (!isInitiator)
+    isMember = '2';
+  else if (isInitiator)
+    remoteVideo = document.createElement('video');
 });
 
 socket.on('joined', function (room){
   console.log('This peer has joined room ' + room);
   isChannelReady = true;
+  isMember = '1';
+  remoteVideo = document.createElement('video');
 });
 
 socket.on('log', function (array){
@@ -83,8 +95,10 @@ socket.on('message', function (message){
     if (!isInitiator && !isStarted) {
       maybeStart();
     }
-    pc.setRemoteDescription(new RTCSessionDescription(message));
-    doAnswer();
+    if (isMember === '1') {
+      pc.setRemoteDescription(new RTCSessionDescription(message));
+      doAnswer();
+    }
   } else if (message.type === 'answer' && isStarted) {
     pc.setRemoteDescription(new RTCSessionDescription(message));
   } else if (message.type === 'candidate' && isStarted) {
@@ -96,12 +110,46 @@ socket.on('message', function (message){
   }
 });
 
+socket.on('participantID', function (numClients) {
+  if (localVideo != "undefined")
+    localVideo.setAttribute('participantID', numClients);
+  else 
+    localVideoParticipantID = numClients;
+
+  if (remoteVideo != "undefined")
+    remoteVideo.setAttribute('participantID', 1);
+  else
+    remoteVideoParticipantID = 1;
+});
+
+socket.on('participantIDs', function (numClients) {
+  console.log("participantIDs " + numClients);
+  alert("participantIDs " + numClients);
+  if (isInitiator) {  
+    alert("participantIDs " + numClients);   
+    remoteVideo.setAttribute('participantID', numClients); 
+  }
+});
+
 ////////////////////////////////////////////////////
 
-var localVideo = document.querySelector('#localVideo');
-var remoteVideo = document.querySelector('#remoteVideo');
+//var localVideo = document.querySelector('#localVideo');
+//var remoteVideo = document.querySelector('#remoteVideo');
+var participants = document.querySelector('#participants');
+var localVideoParticipantID;
+var remoteVideoParticipantID;
 
 function handleUserMedia(stream) {
+  localVideo = document.createElement('video');
+  if (localVideoParticipantID != "undefined")
+    localVideo.setAttribute('participantID', localVideoParticipantID);
+  if (isInitiator)
+    localVideo.setAttribute('participantID', 1);
+  localVideo.setAttribute('id','localVideo');
+  localVideo.setAttribute('autoplay', true);
+  localVideo.setAttribute('controls', true);
+  participants.insertBefore(localVideo, participants.firstChild);
+
   localStream = stream;
   attachMediaStream(localVideo, stream);
   console.log('Adding local stream.');
@@ -113,6 +161,7 @@ function handleUserMedia(stream) {
 
 function handleUserMediaError(error){
   console.log('getUserMedia error: ', error);
+  alert('unable to get access to your webcam.');
 }
 
 var constraints = {audio: true, video: true};
@@ -120,17 +169,19 @@ var constraints = {audio: true, video: true};
 getUserMedia(constraints, handleUserMedia, handleUserMediaError);
 console.log('Getting user media with constraints', constraints);
 
-if (location.hostname != "localhost") {
+/*if (location.hostname != "localhost") {
   requestTurn('https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913');
-}
+}*/
 
 function maybeStart() {
   if (!isStarted && localStream && isChannelReady) {
-    createPeerConnection();
-    pc.addStream(localStream);
-    isStarted = true;
-    if (isInitiator) {
-      doCall();
+    if (isInitiator || isMember === '1') {
+      createPeerConnection();
+      pc.addStream(localStream);
+      isStarted = true;
+      if (isInitiator) {
+        doCall();
+      }
     }
   }
 }
@@ -319,6 +370,13 @@ function requestTurn(turn_url) {
 
 function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
+  if (remoteVideoParticipantID != "undefined")
+    remoteVideo.setAttribute('participantID', remoteVideoParticipantID);
+  remoteVideo.setAttribute('id','remoteVideo');
+  remoteVideo.setAttribute('autoplay', true);
+  remoteVideo.setAttribute('controls', true);
+  participants.insertBefore(remoteVideo, participants.firstChild);  
+
  // reattachMediaStream(miniVideo, localVideo);
   attachMediaStream(remoteVideo, event.stream);
   remoteStream = event.stream;
@@ -336,8 +394,10 @@ function hangup() {
 
 function handleRemoteHangup() {
   console.log('Session terminated.');
+  var remoteVideo = document.getElementById('remoteVideo');
+  remoteVideo.remove();
   stop();
-  isInitiator = false;
+  //isInitiator = false;
 }
 
 function stop() {
@@ -466,10 +526,115 @@ $( document ).ready(function() {
   $("#snapshot").on("click", function snapshot() {
     var video = document.getElementById('localVideo');
     var canvas = document.getElementById('photo');
-    canvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+    canvas.height = video.videoHeight;
+    canvas.width = video.videoWidth;
+    canvas.getContext('2d').drawImage(video, 0, 0);
     Canvas2Image.saveAsPNG(canvas);
   });
 });
+  
+//var rafId;
+//var frames = [];
+var videoRecorder;
+
+function recordVideo() {
+  /*frames = []; // clear existing frames;
+  function drawVideoFrame(time) {
+    var video = document.getElementById('localVideo');
+    var canvas = document.getElementById('photo');
+    canvas.height = video.videoHeight;
+    canvas.width = video.videoWidth;
+    rafId = requestAnimationFrame(drawVideoFrame);
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    var url = canvas.toDataURL('image/webp', 1);
+
+    frames.push(url);
+  };
+  rafId = requestAnimationFrame(drawVideoFrame);*/
+  document.getElementById("stop-record").hidden = false;
+  document.getElementById("start-record").hidden = true;
+  var video = document.getElementById('localVideo');
+  var options = {
+    type: 'video',
+    video: {
+        width: video.videoWidth,
+        height: video.videoHeight
+    },
+    canvas: {
+        width: video.videoWidth,
+        height: video.videoHeight
+    }
+  };
+
+  videoRecorder = window.RecordRTC(localStream, options);
+  videoRecorder.startRecording();
+}
+
+function stopRecordingVideo() {
+  /*
+  cancelAnimationFrame(rafId);  // Note: not using vendor prefixes!
+  var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+  var url = window.URL.createObjectURL(webmBlob);
+
+  var video = document.createElement('video');
+  video.src = url;
+  document.body.appendChild(video);
+
+  var downloadLink = document.createElement('a');
+  downloadLink.download = 'capture.webm';
+  downloadLink.textContent = '[ download video ]';
+  downloadLink.title = 'Download your .webm video';
+  downloadLink.href = url;
+  var p = document.createElement('p');
+  p.appendChild(downloadLink);
+  document.body.appendChild(p);*/
+  var video = document.getElementById("video");
+  document.getElementById("stop-record").hidden = true;
+  document.getElementById("start-record").hidden = false;
+  if (videoRecorder)
+      videoRecorder.stopRecording(function(url) {
+          video.src = url;
+          video.play();       
+          document.getElementById('video-url-preview').innerHTML = '<a href="' + url + '" target="_blank">Recorded Video URL</a>';
+      });
+}
+
+var audioRecorder;
+
+function recordAudio() {
+  var stream = new window.MediaStream(localStream.getAudioTracks());
+
+  var options = {
+    type: 'audio',
+  };
+
+  audioRecorder = window.RecordRTC(stream, options);
+  audioRecorder.startRecording();
+}
+
+function stopRecordingAudio() {
+  var audio = document.getElementById("audio");
+
+  if (audioRecorder)
+      audioRecorder.stopRecording(function(url) {
+          
+          audio.src = url;
+          audio.muted = false;
+          audio.play();  
+          document.getElementById('audio-url-preview').innerHTML = '<a href="' + url + '" target="_blank">Recorded Audio URL</a>';
+      });
+}
+
+function initEvents() {
+  document.getElementById("start-record").addEventListener('click', recordVideo);
+  document.getElementById("start-record").addEventListener('click', recordAudio);
+  document.getElementById("stop-record").addEventListener('click', stopRecordingVideo);
+  document.getElementById("stop-record").addEventListener('click', stopRecordingAudio);
+}
+
+initEvents(); 
+
+
 
 
 

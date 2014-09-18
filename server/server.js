@@ -32,19 +32,21 @@ io.sockets.on('connection', function (socket){
 	});
 
 	socket.on('create or join', function (room) {
-		var numClients = getUsersInRoomNumber(room);
+		var numClients = getUsersInRoomNumber(room) + 1;
 		
 		log('Room ' + room + ' has ' + numClients + ' client(s)');
 		log('Request to create or join room ' + room);
 
-		if (numClients === 0){
+		if (numClients === 1){
 			socket.join(room);
 			socket.emit('created', room);
 		} else if (numClients <= 5) {
 			io.sockets.in(room).emit('join', room);
+			io.sockets.in(room).emit('participantIDs', numClients);
 			socket.join(room);
 			socket.emit('joined', room);
-		} else { // max two clients
+			socket.emit('participantID', numClients);
+		} else { // max five clients
 			socket.emit('full', room);
 		}
 		socket.emit('emit(): client ' + socket.id + ' joined room ' + room);

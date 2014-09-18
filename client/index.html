@@ -10,26 +10,31 @@
 
 <title>WebRTC client</title>
 
-<!-- <link rel='stylesheet' href='css/main.css' /> -->
+<link rel='stylesheet' href='css/main.css' />
 
 </head>
 
 <body>
 
 <div id='container'>
-  <a href="login.html">Login</a>
-  <div id='videos'>
-    <video id='localVideo' autoplay muted></video>
-    <video id='remoteVideo' autoplay></video>  
-    <canvas id="photo" style="display: none;"></canvas> 
+  <div id='participants'>
   </div>
-  
+  <canvas id="photo" style="display: none;"></canvas> 
+
   <button id="disable-audio">Disable Audio</button>
   <button id="enable-audio" hidden="hidden">Enable Audio</button>
   <button id="disable-video">Disable Video</button>
   <button id="enable-video" hidden="hidden">Enable Video</button>
   <button id="snapshot">Snapshot</button>
   <button id="share-screen">Share Screen</button>
+  <button id="start-record">Record Video</button>
+  <button id="stop-record" hidden="hidden">Stop Video</button>
+  <br>
+  <video id="video" autoplay controls ></video>
+  <audio id="audio" autoplay></audio>
+  <h2 id="video-url-preview"></h2>
+  <h2 id="audio-url-preview"></h2>
+
   <div id='textareas'>
 		<textarea id="dataChannelSend" disabled placeholder="Press Start, enter some text, then press Send."></textarea>
 		<textarea id="dataChannelReceive" disabled></textarea>
@@ -44,10 +49,12 @@
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src='js/main.js'></script>
 <script src="http://www.nihilogic.dk/labs/canvas2image/canvas2image.js"></script>
+<script src="//cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
+<script src="js/Whammy.js"></script>
+
 <script type="text/javascript">
 $('#share-screen').click(function() {
             getUserMedia({
-                    audio: false,
                     video: {
                         mandatory: {
                             chromeMediaSource: 'screen',
