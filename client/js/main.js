@@ -19,6 +19,7 @@ var remoteStream;
 var turnReady;
 var localVideo;
 var remoteVideo;
+var obj = { hangupID: undefined } ;
 
 var pc_config = webrtcDetectedBrowser === 'firefox' ?
   {'iceServers':[{'url':'stun:23.21.150.121'}]} : // number IP
@@ -87,6 +88,11 @@ function sendMessage(message){
   socket.emit('message', message);
 }
 
+function sendParticipantId(participantID) {
+  console.log('Sending participantID: ', participantID);
+  socket.emit('hangupID', participantID);
+}
+
 socket.on('message', function (message){
   console.log('Receive message:', message);
   if (message === 'got user media') {
@@ -110,23 +116,34 @@ socket.on('message', function (message){
   }
 });
 
-socket.on('participantID', function (numClients) {
-  if (localVideo != "undefined")
-    localVideo.setAttribute('participantID', numClients);
-  else 
-    localVideoParticipantID = numClients;
+socket.on('hangupID', function (participantID) {
+  console.log('Receive message:', participantID);
+  if (isInitiator){
+    var removeVideo = $( 'video[participantid='+ participantID +']' );
+    removeVideo.remove();
+  }
+});
 
-  if (remoteVideo != "undefined")
-    remoteVideo.setAttribute('participantID', 1);
-  else
+socket.on('participantID', function (numClients) {
+  if (typeof localVideo === "undefined") {
+    localVideoParticipantID = numClients;
+    obj.hangupID = numClients;
+    Object.freeze(obj);   // Freezing the hangupID so that next connection doesn't change the value of hangupID
+  }
+  else 
+    localVideo.setAttribute('participantID', numClients);
+
+  if (typeof remoteVideo === "undefined")
     remoteVideoParticipantID = 1;
+  else
+    remoteVideo.setAttribute('participantID', 1);  
 });
 
 socket.on('participantIDs', function (numClients) {
   console.log("participantIDs " + numClients);
-  alert("participantIDs " + numClients);
+  //alert("participantIDs " + numClients);
   if (isInitiator) {  
-    alert("participantIDs " + numClients);   
+    //alert("participantIDs " + numClients);   
     remoteVideo.setAttribute('participantID', numClients); 
   }
 });
@@ -141,7 +158,7 @@ var remoteVideoParticipantID;
 
 function handleUserMedia(stream) {
   localVideo = document.createElement('video');
-  if (localVideoParticipantID != "undefined")
+  if (typeof localVideoParticipantID != "undefined")
     localVideo.setAttribute('participantID', localVideoParticipantID);
   if (isInitiator)
     localVideo.setAttribute('participantID', 1);
@@ -188,6 +205,7 @@ function maybeStart() {
 
 window.onbeforeunload = function(e){
 	sendMessage('bye');
+  sendParticipantId(obj.hangupID);
 }
 
 /////////////////////////////////////////////////////////
@@ -370,7 +388,7 @@ function requestTurn(turn_url) {
 
 function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
-  if (remoteVideoParticipantID != "undefined")
+  if (typeof remoteVideoParticipantID != "undefined")
     remoteVideo.setAttribute('participantID', remoteVideoParticipantID);
   remoteVideo.setAttribute('id','remoteVideo');
   remoteVideo.setAttribute('autoplay', true);
@@ -394,8 +412,8 @@ function hangup() {
 
 function handleRemoteHangup() {
   console.log('Session terminated.');
-  var remoteVideo = document.getElementById('remoteVideo');
-  remoteVideo.remove();
+  /*var remoteVideo = document.getElementById('remoteVideo');
+  remoteVideo.remove();*/
   stop();
   //isInitiator = false;
 }
