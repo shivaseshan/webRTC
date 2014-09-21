@@ -4,7 +4,7 @@ var sendChannel;
 var sendButton = document.getElementById("sendButton");
 var sendTextarea = document.getElementById("dataChannelSend");
 var receiveTextarea = document.getElementById("dataChannelReceive");
-
+var chatbox = document.getElementById("chatbox");
 sendButton.onclick = sendData;
 
 var isChannelReady;
@@ -247,6 +247,7 @@ function createPeerConnection() {
 function sendData() {
   var data = sendTextarea.value;
   sendChannel.send(data);
+  chatbox.value = chatbox.value + '\n' + data;
   trace('Sent data: ' + data);
 }
 
@@ -280,7 +281,8 @@ function gotReceiveChannel(event) {
 
 function handleMessage(event) {
   trace('Received message: ' + event.data);
-  receiveTextarea.value = event.data;
+  //receiveTextarea.value = event.data;
+  chatbox.value = chatbox.value + '\n' + event.data;
 }
 
 function handleSendChannelStateChange() {

@@ -35,13 +35,11 @@
   <h2 id="video-url-preview"></h2>
   <h2 id="audio-url-preview"></h2>
 
-  <div id='textareas'>
-		<textarea id="dataChannelSend" disabled placeholder="Press Start, enter some text, then press Send."></textarea>
-		<textarea id="dataChannelReceive" disabled></textarea>
-	</div>
-
+  <textarea id="chatbox"></textarea>
+  <input id="dataChannelSend" type="text" size="63" disabled placeholder="Enter some text, then press Send."/>
   <button id="sendButton" disabled>Send</button>
-
+  
+	<!--<textarea id="dataChannelReceive" disabled></textarea> -->
 </div>
 
 <script src='js/socket.io/socket.io.js'></script>
