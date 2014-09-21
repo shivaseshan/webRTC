@@ -1,3 +1,11 @@
 .margin-top-05 {
 	margin-top: 5%;
 }
+
+.form-control {
+	margin-top: 10px;
+}
+
+.glyphicon{
+	margin: -15px 11px 0px;
+}
