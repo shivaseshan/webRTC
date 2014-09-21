@@ -1,7 +1,7 @@
 <?php
 	$dbhost = "localhost";
 	$dbuser = "root";
-	$dbpass = "root";
+	$dbpass = "admin123";
 	$db_name= "rtcdatabase";
 
 	// Create connection

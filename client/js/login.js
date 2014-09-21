@@ -14,7 +14,8 @@ function successEvents(t,item) {
 }
 
 $( document ).ready(function() {
-	$('#signupForm')[0].reset();
+	
+document.getElementById("signupForm").reset();
 	$("#email").on('change focus keyup',function () {
 		var val = $(this).val();
 		var item1 ="#emailglyph" ;
@@ -92,17 +93,17 @@ $( document ).ready(function() {
 		}
 	})
 
-	$("#date").on('change focus keyup',function() {
+	$("#age").on('change focus keyup',function() {
 		var val=$(this).val();
-		var item1 ="#dateglyph" ;
+		var item1 ="#ageglyph" ;
 		$(this).parent().find(item1).addClass("glyphicon");  
 		$(this).parent().find(item1).addClass("form-control-feedback");
-		if(!val)
+		if(!val || val>100 || val<18)
 		{
-			failureEvents(this);
+			failureEvents(this,item1);
 		}
 		else {
-			successEvents(this);
+			successEvents(this,item1);
 
 		}
 
