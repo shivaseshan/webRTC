@@ -1,16 +1,8 @@
 <?php 
-include 'includes/connect.php';
+  include 'includes/connect.php';
+  $title = "Home Page";
+  include("header.php"); 
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
-	
-</head>
 
 <body>
 
