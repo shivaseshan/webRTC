@@ -1,10 +1,10 @@
 <?php
-session_start();
-ob_start();
-error_reporting(0);
-$title = "Login Page";
-$_SESSION['login_user'] ="";
-include("header.php"); 
+	session_start();
+	ob_start();
+	error_reporting(0);
+	$title = "Login Page";
+	$_SESSION['login_user'] ="";
+	include("header.php"); 
 ?>
 
 <body>
