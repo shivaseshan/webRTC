@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Signalling server",
+  "main": "server.js",
+  "dependencies": {
+    "socket.io": "^1.1.0",
+    "node-static": "^0.7.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shivaseshan/webRTC.git"
+  },
+  "keywords": [
+    "webrtc"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shivaseshan/webRTC/issues"
+  },
+  "homepage": "https://github.com/shivaseshan/webRTC"
+}
