@@ -44,11 +44,11 @@
 
         while($row = mysqli_fetch_array($result)) {
           $src="./videos/".$row['source'];
-            $id_general="video_".$y;
+            $id_general="video_general".$y;
         	echo '<div class="col-md-4">';
 
         	echo '<div class="flex-video widescreen" style="margin: 0 auto;">';
-        	echo '<video id='.$id_general.'. width="320" height="240" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
+        	echo '<video id='.$id_general.' width="320" height="240" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
         	echo '<source src='.$src.' type="video/mp4">';
         	echo '</video>';
         	echo '</div>';
@@ -83,12 +83,12 @@
         {
           $src="./videos/".$row['source'];
 
-        $id="video_".$i;
+        $id="video_music".$i;
 
         	echo '<div class="col-md-4">';
 
         	echo '<div class="flex-video widescreen" style="margin: 0 auto;">';
-        	echo '<video id='.$id.'. width="320" height="240" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
+        	echo '<video id='.$id.' width="320" height="240" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
         	echo '<source  src='.$src.' type="video/mp4">';
         	echo '</video>';
         	echo '</div>';
