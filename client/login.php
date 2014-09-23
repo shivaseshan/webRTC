@@ -7,7 +7,7 @@
 	include("header.php"); 
 ?>
 
-<body>
+	<body>
 	<?php include("includes/connect.php"); ?>
 	
 	<div class="container-fluid">
@@ -48,7 +48,7 @@
 					if(isset($_POST['login']))
 					{
 						$userdomain = $_POST['userdomain'];
-						$password=$_POST['pwd'];
+						$password = md5($_POST['pwd']);
 						$result = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='{$userdomain}'");
 						if (!$result)
 						{
@@ -60,14 +60,12 @@
 						$count2=mysqli_num_rows($result2);
 						if($count1==1 && $count2==1 && $password==$row[0])
 						{
-							echo '<script type="text/javascript">alert("Login sucess"); </script>';
 							$_SESSION['login_user']=$userdomain;
-							header( 'Location: http://localhost:80/webRTC/client/dashboard.php' ) ;
+							header( 'Location: ./dashboard.php' ) ;
 						}
 						else
 						{
 							echo '<script type="text/javascript">document.getElementById("loginErr").innerHTML="Invalid User Name or Password";</script>';
-							
 						}
 					}
 					?>
@@ -75,7 +73,6 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-
 									<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 									<h4 class="modal-title">Sign Up Form</h4>
 								</div>
@@ -88,14 +85,12 @@
 											</div>
 										</div>
 
-
 										<div class="row">
 											<div class="col-md-10">
 												<input required = "required" class="form-control" type="text" placeholder="Last Name" id="lname" name="lname">
 												<span id="lnameglyph" class=""></span>
 											</div>
 										</div>
-
 
 										<div class="row">
 											<div class="col-md-10">
@@ -104,7 +99,6 @@
 											</div>
 										</div>
 
-
 										<div class="row">
 											<div class="col-md-10">
 												<input  placeholder="Age" class="form-control" type="number" id="age" name="userage" required = "required">
@@ -112,20 +106,21 @@
 											</div>
 										</div>
 
-
 										<div class="row">
 											<div class="col-md-10">
 												<input required = "required" class="form-control" type="text" placeholder="User Name" id="uname" name="uname"  >
 												<span id="unameglyph" class=""></span>
 
 											</div>
-										</div>							
+										</div>	
+
 										<div class="row">
 											<div class="col-md-10">
 												<input required = "required" class="form-control" type="password" placeholder="Password" id="usrpwd" name="usrpwd">
 												<span id="pwdglyph" class=""></span>
 											</div>
 										</div>
+
 										<div class="row">
 											<div class="col-md-10">
 												<input required = "required" class="form-control" type="password" placeholder="Confirm Password" id="cnfrmpwd" name="cnfrmpwd">
@@ -138,38 +133,35 @@
 										<button type="submit" class="btn btn-primary" id="signup" name="signup" >Sign Up</button>
 									</div>
 									<?php
-									$isUserExist ="";
-									
-									if(isset($_POST['signup']))
-									{
-										$result = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='{$_POST['uname']}'");
-										if (!$result)
+										$isUserExist ="";
+										
+										if(isset($_POST['signup']))
 										{
-											die('Invalid query: ' . mysql_error());
-										}
-										$count1=mysqli_num_rows($result);
-										if($count1==0)
-										{
-											$user_name=$_POST['uname'];
-											$isUserExist="NO";
-											$uid=mysqli_query($conn, "SELECT max(user_id) from user");
-											$max_uid=mysqli_num_rows($uid);
-											$max_uid=$max_uid+1;
-											
-											$insert=mysqli_query($conn,"INSERT INTO user values('$max_uid','{$_POST['uname']}','{$_POST['fname']}','{$_POST['lname']}','{$_POST['email']}','{$_POST['userage']}','{$_POST['usrpwd']}')");
+											$result = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='{$_POST['uname']}'");
+											if (!$result)
+											{
+												die('Invalid query: ' . mysql_error());
+											}
+											$count1=mysqli_num_rows($result);
+											if($count1==0)
+											{
+												$user_name=$_POST['uname'];
+												$isUserExist="NO";
+												$password = md5($_POST['usrpwd']);
+												$insert=mysqli_query($conn,"INSERT INTO user (user_name, first_name, last_name, email_id, age, password) VALUES('{$_POST['uname']}','{$_POST['fname']}','{$_POST['lname']}','{$_POST['email']}','{$_POST['userage']}','{$password}')");
 												if (!$insert)
 												{
 													die('Invalid query: ' . mysql_error());
 												}
-												header( 'Location: http://localhost:80/webRTC/client/login.php?isUserExist='.$isUserExist) ;			
+												header( 'Location: ./login.php?isUserExist='.$isUserExist) ;			
 											}
 											else
 											{
 												$isUserExist="YES";		
-												header( 'Location: http://localhost:80/webRTC/client/login.php?isUserExist='.$isUserExist) ;										
+												header( 'Location: ./login.php?isUserExist='.$isUserExist) ;										
 											}
 										}
-										?>						
+									?>						
 									</form>
 								</div>
 							</div>
@@ -177,7 +169,7 @@
 					</div>
 				</div>
 			</div>
-			<?php mysqli_close($conn); ?>
-		</body> 
-		</html>
-		<?php ob_flush() ?>
+		<?php mysqli_close($conn); ?>
+	</body> 
+</html>
+<?php ob_flush() ?>

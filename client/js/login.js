@@ -15,7 +15,8 @@ function successEvents(t,item) {
 
 $( document ).ready(function() {
 	
-document.getElementById("signupForm").reset();
+	//document.getElementById("signupForm").reset();
+
 	$("#email").on('change focus keyup',function () {
 		var val = $(this).val();
 		var item1 ="#emailglyph" ;
