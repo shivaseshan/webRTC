@@ -37,8 +37,22 @@ var sdpConstraints = {'mandatory': {
   'OfferToReceiveVideo':true }};
 
 /////////////////////////////////////////////
+function getUrlParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) 
+        {
+            return sParameterName[1];
+        }
+    }
+}          
 
-var room = prompt('Enter room name:'); //location.pathname.substring(1);
+//var room = prompt('Enter room name:'); //location.pathname.substring(1);
+var room = getUrlParameter('room');
 if (room === '') {
   room = location.pathname.substring(1);
 }

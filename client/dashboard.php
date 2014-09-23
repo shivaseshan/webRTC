@@ -6,9 +6,18 @@
 <?php include("includes/connect.php"); ?>
 
 	<body>
-		<div class=" col-md-4 col-md-offset-4 margin-top-15">
-			Welcome <?php echo $_SESSION['login_user'];?>
-		</div>
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="container-fluid" style="float: left; font-size: large;">
+					Welcome <?php echo $_SESSION['login_user'];?>
+				</div>
+				<div class="text-right">
+	          		<a href="./logout.php" class="btn btn-default" >Logout</a>
+	        	</div>
+			</nav>
+
+			<div class="container">
+				<p> Broadcast currently Live ! </p>
+				<a href="./broadcast.html?room=test"><img src="./images/video_poster.png"></a>
+			</div>
 	</body>
 </html>
-

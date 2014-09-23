@@ -9,6 +9,10 @@
 
 	<body>
 	<?php include("includes/connect.php"); ?>
+	<?php 
+		$noLink = true; 
+		include("includes/navbar.php"); 
+	?>
 	
 	<div class="container-fluid">
 		<div class="row-fluid">

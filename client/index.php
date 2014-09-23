@@ -6,15 +6,20 @@
 
 <body>
 
-  <div class="container">
+  <!--<div class="container">
     <div class="row">
     	<div  class="col-md-12">
-        <div class="navbar-form navbar-right navbar-static-top" role="search" style="margin-right:3%;">
+        <div class="navbar-form navbar-right navbar-static-top">
           <a href="./login.php" class="btn btn-default" >Login</a>
         </div>
       </div>
     </div>
   </div>
+  -->
+  <?php 
+    $noLink = false;
+    include("includes/navbar.php"); 
+  ?>
 
   <div class="container">
     <div class="row">
