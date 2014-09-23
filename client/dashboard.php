@@ -6,6 +6,11 @@
 <?php include("includes/connect.php"); ?>
 
 	<body>
+			<?php if($_SESSION['login_user'] == "") {
+				echo "Login with proper credentials";
+			}
+			else {
+			?>	
 			<nav class="navbar navbar-default" role="navigation">
 				<div class="container-fluid" style="float: left; font-size: large;">
 					Welcome <?php echo $_SESSION['login_user'];?>
@@ -19,5 +24,6 @@
 				<p> Broadcast currently Live ! </p>
 				<a href="./broadcast.html?room=test"><img src="./images/video_poster.png"></a>
 			</div>
+			<?php } ?>
 	</body>
 </html>
