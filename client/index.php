@@ -34,6 +34,7 @@
   <div class="container">
     <div class="row">
     	<?php
+    	$y=1;
       	$category="general";
         $result = mysqli_query($conn, "SELECT * FROM video WHERE category='general'");
         if (!$result)
@@ -43,15 +44,16 @@
 
         while($row = mysqli_fetch_array($result)) {
           $src="./videos/".$row['source'];
-
+            $id_general="video_".$y;
         	echo '<div class="col-md-4">';
 
         	echo '<div class="flex-video widescreen" style="margin: 0 auto;">';
-        	echo '<video width="320" height="240" poster="./images/video_poster.png" controls >';
+        	echo '<video id='.$id_general.'. width="320" height="240" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
         	echo '<source src='.$src.' type="video/mp4">';
         	echo '</video>';
         	echo '</div>';
           echo '</div>';
+          $y++;
         }
       ?>
     </div>
