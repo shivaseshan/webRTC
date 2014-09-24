@@ -27,7 +27,22 @@
 
 					<div class="inline">
 						<button id="lgn-sbmt" class="btn btn-primary center" name="login" type="submit">Login</button>
-					</div>	</form>
+						<br><br>
+						<div class="fb-login-button" data-size="large" data-show-faces="false" data-auto-logout-link="false">Sign in</div>
+						<br><br>
+						<div id="signinButton">
+						  <span
+						    class="g-signin"
+						    data-callback="signinCallback"
+						    data-clientid="364658795193-l9ujs1947j350fgk45qlptkn28h7jhlf.apps.googleusercontent.com"
+						    data-cookiepolicy="single_host_origin"
+						    data-requestvisibleactions="http://schema.org/AddAction"
+						    data-scope="https://www.googleapis.com/auth/plus.login">
+						  </span>
+						</div>
+						<!-- <div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false"></div> -->
+					</div>	
+				</form>
 					<div class="top inline">				
 						<label>
 							<a href="/forgot-password">Forgot Password?</a> | <a href="" data-toggle="modal" data-target="#myModal">Sign up</a>

@@ -57,7 +57,7 @@ if (room === '') {
   room = location.pathname.substring(1);
 }
 
-var socket = io.connect('http://192.168.0.7:2013');
+var socket = io.connect('http://10.143.166.221:2013');
 
 if (room !== '') {
   console.log('Create or join room', room);
