@@ -57,7 +57,7 @@ if (room === '') {
   room = location.pathname.substring(1);
 }
 
-var socket = io.connect('http://10.143.166.221:2013');
+var socket = io.connect('http://10.143.164.148:2013');
 
 if (room !== '') {
   console.log('Create or join room', room);
@@ -571,6 +571,26 @@ $( document ).ready(function() {
 //var frames = [];
 var videoRecorder;
 
+function PostBlob(blob, fileType, fileName) {
+  // FormData
+  var formData = new FormData();
+  formData.append(fileType + '-filename', fileName);
+  formData.append(fileType + '-blob', blob);
+  xhr('combineAudioVideo.php', formData);
+}
+
+function xhr(url, data) {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          alert(xmlhttp.responseText);
+      }
+  };
+  
+  xmlhttp.open('POST', url);
+  xmlhttp.send(data);
+}
+
 function recordVideo() {
   /*frames = []; // clear existing frames;
   function drawVideoFrame(time) {
@@ -630,7 +650,8 @@ function stopRecordingVideo() {
           video.src = url;
           video.play();       
           document.getElementById('video-url-preview').innerHTML = '<a href="' + url + '" target="_blank">Recorded Video URL</a>';
-      });
+          PostBlob(videoRecorder.getBlob(), 'video', 'filename.webm');
+      });  
 }
 
 var audioRecorder;
@@ -651,11 +672,11 @@ function stopRecordingAudio() {
 
   if (audioRecorder)
       audioRecorder.stopRecording(function(url) {
-          
           audio.src = url;
           audio.muted = false;
           audio.play();  
           document.getElementById('audio-url-preview').innerHTML = '<a href="' + url + '" target="_blank">Recorded Audio URL</a>';
+          PostBlob(audioRecorder.getBlob(), 'audio', 'audio.wav');
       });
 }
 
