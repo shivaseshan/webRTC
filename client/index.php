@@ -1,7 +1,7 @@
 <?php 
   include 'includes/connect.php';
   $title = "Home Page";
-  include("header.php"); 
+  include("includes/header.php"); 
 ?>
 
 <body>

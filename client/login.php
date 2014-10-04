@@ -4,7 +4,7 @@
 	error_reporting(0);
 	$title = "Login Page";
 	$_SESSION['login_user'] ="";
-	include("header.php"); 
+	include("includes/header.php"); 
 ?>
 
 	<body>
