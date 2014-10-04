@@ -52,23 +52,23 @@
 		  		<form role="form" method="post" action="dashboard.php">
 		  		  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="first-name">First Name</label>
-				    <input type="text" class="form-control col-md-4" id="first-name" value="<?php echo $row[2]; ?>" disabled>
+				    <input type="text" class="form-control col-md-4" name="first-name" id="first-name" value="<?php echo $row[2]; ?>" disabled>
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn btn-default" id="edit-first-name">Edit</a>
 		  		  </div>
 				  
 				  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="last-name">Last Name</label>
-				    <input type="text" class="form-control col-md-4" id="last-name" value="<?php echo $row[3]; ?>" disabled>
+				    <input type="text" class="form-control col-md-4" name="last-name" id="last-name" value="<?php echo $row[3]; ?>" disabled>
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn" id="edit-last-name">Edit</a>
 				  </div>
 				  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="email">E Mail</label>
-				    <input type="email" class="form-control col-md-4" id="email" value="<?php echo $row[4]; ?>" disabled>
+				    <input type="email" class="form-control col-md-4" name="email" id="email" value="<?php echo $row[4]; ?>" disabled>
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn" id="edit-email">Edit</a>
 				  </div>
 				  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="password">Password</label>
-				    <input type="password" class="form-control col-md-4" id="password" value="<?php echo $row[5]; ?>" disabled> 
+				    <input type="password" class="form-control col-md-4" name="password" id="password" value="<?php echo $row[5]; ?>" disabled> 
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn" id="edit-password">Edit</a>
 				  </div>
 				  <div class="row">
@@ -83,8 +83,12 @@
 			  </div>
 
 			  <?php
-			  	if (isset($_POST['save']})) {
-			  		$result = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='$username'");
+			  	if (isset($_POST['save'])) {
+			  		$firstName = $_POST['first-name'];
+			  		$lastName = $_POST['last-name'];
+			  		$email = $_POST['email'];
+			  		$password = md5($_POST['password']);
+			  		$result = mysqli_query($conn, "UPDATE user SET first_name='$firstName', last_name='$lastName', email_id='$email', password='$password' WHERE user_name='$username'");
 					if (!$result) {
 						die('Invalid query: ' . mysql_error());
 					}
