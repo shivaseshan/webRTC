@@ -28,16 +28,8 @@
 						 	die('Invalid query: ' . mysql_error());
 						}
 				}
+				include("includes/navbar-logged-in.php");
 			?>
-			
-			<nav class="navbar navbar-default" role="navigation">
-				<div class="container-fluid" style="float: left; font-size: large;">
-					Welcome <?php echo $_SESSION['login_user'];?>
-				</div>
-				<div class="text-right">
-	          		<a href="./logout.php" class="btn btn-default" >Logout</a>
-	        	</div>
-			</nav>
 
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
@@ -72,54 +64,54 @@
 		         ?>
 			  	
 			  	<div class="modal fade" id="myModal">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-									<h4 class="modal-title">Event Creation Form</h4>
-								</div>
-								<div class="modal-body">
-									<form role="form" name="form_event" method="post" id="signupForm" >
-										<div class="row">
-											<div class="col-md-10">
-												<input required = "required" class="form-control" type="text" placeholder="Event name" id="ename" name="ename" >
-												<span id="fnameglyph" class=""></span>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-10">
-										<div class="input-append date form_datetime">
-										    <input class="form-control" type="datetime" placeholder="Start time" id="stime" name="stime" value="" >
-										    <span class="add-on"><i class="icon-th"></i></span>
-										</div></div></div>
-   
-																													
-
-										<div class="row">
-											<div class="col-md-10">
-										<div class="input-append date form_datetime">
-										    <input class="form-control" type="datetime" placeholder="End time" id="etime" name="etime" value="" >
-										    <span class="add-on"><i class="icon-th"></i></span>
-										</div></div></div>
-										<div class="row">
-											<div class="col-md-10">
-												<input  class="form-control" type="text" placeholder="Event Description" id="edesc" name="edesc" size="48">
-												<span id="fnameglyph" class=""></span>
-											</div>
-										</div>
-										
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										<button type="submit" class="btn btn-primary" id="create_event" name="create_event" >Create Event</button>
-									</div>
-										
-									</form>
-								</div>
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+								<h4 class="modal-title">Event Creation Form</h4>
 							</div>
+							
+							<form role="form" name="form_event" method="post" id="signupForm" >
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-md-10">
+											<input required = "required" class="form-control" type="text" placeholder="Event name" id="ename" name="ename" >
+											<span id="fnameglyph" class=""></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-10">
+											<div class="input-append date form_datetime">
+									    		<input class="form-control" type="datetime" placeholder="Start time" id="stime" name="stime" value="" >
+									    		<span class="add-on"><i class="icon-th"></i></span>
+											</div>
+										</div>
+									</div>																			
+									<div class="row">
+										<div class="col-md-10">
+											<div class="input-append date form_datetime">
+											    <input class="form-control" type="datetime" placeholder="End time" id="etime" name="etime" value="" >
+											    <span class="add-on"><i class="icon-th"></i></span>
+											</div>
+										</div>
+									</div>							
+									<div class="row">
+										<div class="col-md-10">
+											<input  class="form-control" type="text" placeholder="Event Description" id="edesc" name="edesc" size="48">
+											<span id="fnameglyph" class=""></span>
+										</div>
+									</div>
+								</div>						
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+									<button type="submit" class="btn btn-primary" id="create_event" name="create_event" >Create Event</button>
+								</div>
+							</form>
 						</div>
-			  	<p> Broadcast currently Live ! </p>
-				<a href="./broadcast.php?room=test"><img src="./images/video_poster.png"></a>
+					</div>
+				</div>
+				<p> Broadcast currently Live ! </p>
+				<a href="./broadcast.php?room=test"><img src="./images/video_poster.png"></a>	
 			  </div>
 			  
 			  <div class="tab-pane" id="pre-recorded-videos">
@@ -188,7 +180,6 @@
 				    <input type="text" class="form-control col-md-4" name="first-name" id="first-name" placeholder="Enter First Name" value="<?php echo $row[2]; ?>" disabled>
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn btn-default" id="edit-first-name">Edit</a>
 		  		  </div>
-				  
 				  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="last-name">Last Name</label>
 				    <input type="text" class="form-control col-md-4" name="last-name" id="last-name" placeholder="Enter Last Name" value="<?php echo $row[3]; ?>" disabled>

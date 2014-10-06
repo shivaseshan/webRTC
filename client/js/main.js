@@ -259,9 +259,10 @@ function createPeerConnection() {
 }
 
 function sendData() {
-  var data = sendTextarea.value;
+  var data = document.getElementById("username").firstChild.nodeValue + ": " + sendTextarea.value;
   sendChannel.send(data);
   chatbox.value = chatbox.value + '\n' + data;
+  sendTextarea.value = null;
   trace('Sent data: ' + data);
 }
 
