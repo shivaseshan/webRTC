@@ -6,7 +6,8 @@
 	$_SESSION['login_user'] ="";
 	include("includes/header.php"); 
 ?>
-
+	</head>
+	
 	<body>
 	<?php include("includes/connect.php"); ?>
 	<?php 
@@ -189,6 +190,9 @@
 				</div>
 			</div>
 		<?php mysqli_close($conn); ?>
+		<script type="text/javascript" src="js/login.js"></script>
+		<script type="text/javascript" src="js/facebook.js"></script>
+		<script type="text/javascript" src="js/google.js"></script>
 	</body> 
 </html>
 <?php ob_flush() ?>
