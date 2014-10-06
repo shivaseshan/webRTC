@@ -9,8 +9,35 @@
 			<?php if($_SESSION['login_user'] == "") {
 				echo "Login with proper credentials";
 			}
+						
+
 			else {
+
+			$user_name=$_SESSION['login_user'];
+	      	$result_userid = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='$user_name'");
+	      	while($row_userid = mysqli_fetch_array($result_userid))
+	      	  {
+
+	      	 		$user_id=$row_userid['user_id'];
+	      	 		
+	      	 		
+
+	      	  }
+
 			?>	
+<?php
+			if(isset($_POST['create_event']))
+						{
+							$s_time=strtotime($_POST['stime']);
+							$e_time=strtotime($_POST['etime']);
+							echo $s_time; echo $e_time;
+							$insert=mysqli_query($conn,"INSERT INTO `Events`(`event_name`,`start_time`, `end_time`, `user_id`, `event_description`, `event_room`) VALUES ('{$_POST['ename']}','{$_POST['stime']}','{$_POST['etime']}','{$user_id}','{$_POST['edesc']}','{$_POST['ename']}'");
+								if (!$insert)
+									{
+									 	die('Invalid query: ' . mysql_error());
+									}
+						}
+					?>
 			<nav class="navbar navbar-default" role="navigation">
 				<div class="container-fluid" style="float: left; font-size: large;">
 					Welcome <?php echo $_SESSION['login_user'];?>
@@ -30,12 +57,131 @@
 			<!-- Tab panes -->
 			<div class="tab-content">
 			  <div class="tab-pane active" id="dashboard">
-			  	<p> Broadcast currently Live ! </p>
-				<a href="./broadcast.html?room=test"><img src="./images/video_poster.png"></a>
+			  	<a href="" data-toggle="modal" data-target="#myModal" style="float:right;">Create Event</a>
+			  	<p> Upcoming Events! </p>
+		<?php
+	      	 
+	        $result = mysqli_query($conn, "SELECT * FROM Events WHERE user_id='$user_id'");
+	        if (!$result)
+	        {
+	          die('Invalid query: ' . mysqli_error());
+	        }
+
+	        while($row = mysqli_fetch_array($result)) 
+	        {
+
+	        	if (time() > strtotime($row[start_time]))
+	        	{
+	        	$room_redirect="./broadcast.html?room=".$row[event_room];
+	        echo "<div class=' col-md-6 well' >";
+			echo "<a href=".$room_redirect.">".$row[event_name]." ".$row[start_time]."</a>";
+	        echo "</div>";
+	        }
+	        }
+
+
+         ?>
+			  	
+			  	<div class="modal fade" id="myModal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+									<h4 class="modal-title">Event Creation Form</h4>
+								</div>
+								<div class="modal-body">
+									<form role="form" name="form_event" method="post" id="signupForm" >
+										<div class="row">
+											<div class="col-md-10">
+												<input required = "required" class="form-control" type="text" placeholder="Event name" id="ename" name="ename" >
+												<span id="fnameglyph" class=""></span>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-10">
+										<div class="input-append date form_datetime">
+										    <input class="form-control" type="datetime" placeholder="Start time" id="stime" name="stime" value="" >
+										    <span class="add-on"><i class="icon-th"></i></span>
+										</div></div></div>
+   
+																													
+
+										<div class="row">
+											<div class="col-md-10">
+										<div class="input-append date form_datetime">
+										    <input class="form-control" type="datetime" placeholder="End time" id="etime" name="etime" value="" >
+										    <span class="add-on"><i class="icon-th"></i></span>
+										</div></div></div>
+										<div class="row">
+											<div class="col-md-10">
+												<input  class="form-control" type="text" placeholder="Event Description" id="edesc" name="edesc" size="48">
+												<span id="fnameglyph" class=""></span>
+											</div>
+										</div>
+										
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-primary" id="create_event" name="create_event" >Create Event</button>
+									</div>
+										
+									</form>
+								</div>
+							</div>
+						</div>
 			  </div>
 			  
 			  <div class="tab-pane" id="pre-recorded-videos">
-		  			
+		  			<div class="container">
+    <div class="row">
+    	<div  class="col-md-12">
+    		<ol class="breadcrumb">
+    			<li style="font-size:18px;"> Your Videos </li>
+    		</ol>
+    	</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+    	<?php
+    	$y=1;
+      	$user_name=$_SESSION['login_user'];
+      	$result_userid = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='$user_name'");
+      	 while($row_userid = mysqli_fetch_array($result_userid))
+      	  {
+
+      	 		$user_id=$row_userid['user_id'];
+      	 		
+      	 		
+
+      	  }
+        $result = mysqli_query($conn, "SELECT * FROM video WHERE user_id='$user_id'");
+        if (!$result)
+        {
+          die('Invalid query: ' . mysqli_error());
+        }
+
+        while($row = mysqli_fetch_array($result)) 
+        {
+          $src="./videos/".$row['source'];
+
+        $id="video_music".$i;
+
+        	echo '<div class="col-md-4">';
+
+        	echo '<div class="flex-video widescreen" style="margin: 0 auto;">';
+        	echo '<video id='.$id.' width="320" height="240" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
+        	echo '<source  src='.$src.' type="video/mp4">';
+        	echo '</video>';
+        	echo '</div>';
+          echo '</div>'; 
+        	$i++;
+        }
+      ?>
+    </div>
+  </div>
+  <br>
 			  </div>
 			  
 			  <div class="tab-pane" id="user-profile">
@@ -97,5 +243,12 @@
 			</div>
 			<?php } ?>
 			<script type="text/javascript" src="js/dashboard.js"></script>
+			<script type="text/javascript">
+										    $(".form_datetime").datetimepicker({
+										        format: "dd MM yyyy - hh:ii"
+										   
+										    
+            							 });
+										</script> 
 	</body>
 </html>
