@@ -4,7 +4,9 @@
 	include("includes/header.php");
 	include("includes/connect.php");
 ?>
-<?php include("includes/connect.php"); ?>
+		<link rel="stylesheet" type="text/css" href="css/dashboard.css">
+	</head>
+	
 	<body>
 			<?php if($_SESSION['login_user'] == "") {
 				echo "Login with proper credentials";
@@ -31,7 +33,7 @@
 			<div class="tab-content">
 			  <div class="tab-pane active" id="dashboard">
 			  	<p> Broadcast currently Live ! </p>
-				<a href="./broadcast.html?room=test"><img src="./images/video_poster.png"></a>
+				<a href="./broadcast.php?room=test"><img src="./images/video_poster.png"></a>
 			  </div>
 			  
 			  <div class="tab-pane" id="pre-recorded-videos">
@@ -52,32 +54,32 @@
 		  		<form role="form" method="post" action="dashboard.php">
 		  		  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="first-name">First Name</label>
-				    <input type="text" class="form-control col-md-4" name="first-name" id="first-name" value="<?php echo $row[2]; ?>" disabled>
+				    <input type="text" class="form-control col-md-4" name="first-name" id="first-name" placeholder="Enter First Name" value="<?php echo $row[2]; ?>" disabled>
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn btn-default" id="edit-first-name">Edit</a>
 		  		  </div>
 				  
 				  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="last-name">Last Name</label>
-				    <input type="text" class="form-control col-md-4" name="last-name" id="last-name" value="<?php echo $row[3]; ?>" disabled>
+				    <input type="text" class="form-control col-md-4" name="last-name" id="last-name" placeholder="Enter Last Name" value="<?php echo $row[3]; ?>" disabled>
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn" id="edit-last-name">Edit</a>
 				  </div>
 				  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="email">E Mail</label>
-				    <input type="email" class="form-control col-md-4" name="email" id="email" value="<?php echo $row[4]; ?>" disabled>
+				    <input type="email" class="form-control col-md-4" name="email" id="email" placeholder="Enter Email" value="<?php echo $row[4]; ?>" disabled>
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn" id="edit-email">Edit</a>
 				  </div>
 				  <div class="row">
-				    <label class="col-md-2 margin-top-01" for="password">Password</label>
-				    <input type="password" class="form-control col-md-4" name="password" id="password" value="<?php echo $row[5]; ?>" disabled> 
+				    <label class="col-md-2 margin-top-01" for="password">New Password</label>
+				    <input type="password" class="form-control col-md-4" name="password" id="password" placeholder="Enter Password" disabled required> 
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn" id="edit-password">Edit</a>
 				  </div>
 				  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="confirm-password">Confirm Password</label>
-				    <input type="password" class="form-control col-md-4" id="confirm-password" value="<?php echo $row[5]; ?>" disabled> 
+				    <input type="password" class="form-control col-md-4" id="confirm-password" placeholder="Confirm Password" disabled required> 
 				  </div>
 				  <br><br>
 				  <div class="col-md-6 text-center">
-				  	<button type="submit" name="save" class="btn btn-default">Save</button>
+				  	<button type="submit" name="save" id="save" class="btn btn-default">Save</button>
 				  </div>
 				</form>
 			  </div>
@@ -87,8 +89,14 @@
 			  		$firstName = $_POST['first-name'];
 			  		$lastName = $_POST['last-name'];
 			  		$email = $_POST['email'];
-			  		$password = md5($_POST['password']);
-			  		$result = mysqli_query($conn, "UPDATE user SET first_name='$firstName', last_name='$lastName', email_id='$email', password='$password' WHERE user_name='$username'");
+			  		if ( isset($_POST['password']) ) {
+			  			$password = md5($_POST['password']);
+			  			$result = mysqli_query($conn, "UPDATE user SET first_name='$firstName', last_name='$lastName', email_id='$email', password='$password' WHERE user_name='$username'");
+			  		}
+			  		else
+			  			$result = mysqli_query($conn, "UPDATE user SET first_name='$firstName', last_name='$lastName', email_id='$email' WHERE user_name='$username'");	
+
+			  		
 					if (!$result) {
 						die('Invalid query: ' . mysql_error());
 					}

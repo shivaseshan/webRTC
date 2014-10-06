@@ -528,32 +528,32 @@ $( document ).ready(function() {
   $("#disable-audio").on("click", function(){
     if (localStream != "undefined") {
       localStream.getAudioTracks()[0].enabled = false;
-      document.getElementById("enable-audio").hidden = false;
-      document.getElementById("disable-audio").hidden =  true;
+      document.getElementById("enable-audio").style.display = 'inline-block';
+      document.getElementById("disable-audio").style.display =  'none';
     }
   });
 
   $("#enable-audio").on("click", function(){
     if (localStream != "undefined") {
       localStream.getAudioTracks()[0].enabled = false;
-      document.getElementById("enable-audio").hidden = true;
-      document.getElementById("disable-audio").hidden =  false;
+      document.getElementById("enable-audio").style.display = 'none';
+      document.getElementById("disable-audio").style.display =  'inline-block';
     }
   });
 
   $("#disable-video").on("click", function(){
     if (localStream != "undefined") {
       localStream.getVideoTracks()[0].enabled = false;
-      document.getElementById("enable-video").hidden = false;
-      document.getElementById("disable-video").hidden =  true;
+      document.getElementById("enable-video").style.display = 'inline-block';
+      document.getElementById("disable-video").style.display =  'none';
     }
   });
 
   $("#enable-video").on("click", function(){
     if (localStream != "undefined") {
       localStream.getVideoTracks()[0].enabled = true;
-      document.getElementById("enable-video").hidden = true;
-      document.getElementById("disable-video").hidden =  false;
+      document.getElementById("enable-video").style.display = 'none';
+      document.getElementById("disable-video").style.display =  'inline-block';
     }
   });
 
@@ -564,6 +564,10 @@ $( document ).ready(function() {
     canvas.width = video.videoWidth;
     canvas.getContext('2d').drawImage(video, 0, 0);
     Canvas2Image.saveAsPNG(canvas);
+  });
+
+  $("#hang-up").on("click", function () {
+    window.location.replace("dashboard.php");
   });
 });
   
@@ -592,8 +596,8 @@ function xhr(url, data) {
 }
 
 function recordVideo() {
-  document.getElementById("stop-record").hidden = false;
-  document.getElementById("start-record").hidden = true;
+  document.getElementById("stop-record").style.display = 'inline-block';
+  document.getElementById("start-record").style.display = 'none';
   var video = document.getElementById('localVideo');
   var options = {
     type: 'video',
@@ -628,8 +632,8 @@ function stopRecording() {
   if (audioRecorder)
       audioRecorder.stopRecording(function() {
           videoRecorder.stopRecording(function() {
-            document.getElementById("stop-record").hidden = true;
-            document.getElementById("start-record").hidden = false;
+            document.getElementById("stop-record").style.display = 'none';
+            document.getElementById("start-record").style.display = 'inline-block';
             PostBlob(audioRecorder.getBlob(), videoRecorder.getBlob(), fileName);
           });
           

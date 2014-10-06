@@ -1,5 +1,5 @@
 video {
-	margin: 0 10px 0 0;
+	margin: 10px 10px 10px 10px;
 }
 
 #remoteVideo {
@@ -16,7 +16,7 @@ video {
     padding:10px;
     background:#fff;
     height:270px;
-    width:430px;
+    width:450px;
     border:1px solid #ACD8F0;
     overflow:auto; 
 }
