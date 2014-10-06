@@ -49,7 +49,6 @@
             break;
         }
     }
-
     // if it is audio-blob
     if (isset($_FILES["audio-blob"])) {
         $uploadDirectory = 'uploads/'.$_POST["filename"].'.wav';
@@ -58,7 +57,9 @@
         }
         else {
             // if it is video-blob
-            if (isset($_FILES["video-blob"])) {
+			echo "here";
+           if (isset($_FILES["video-blob"])) {
+			    echo "inside video";
                 $uploadDirectory = 'uploads/'.$_POST["filename"].'.webm';
                 if (!move_uploaded_file($_FILES["video-blob"]["tmp_name"], $uploadDirectory)) {
                     echo("Problem writing video file to disk!");
@@ -67,7 +68,7 @@
                     $audioFile = 'uploads/'.$_POST["filename"].'.wav';
                     $videoFile = 'uploads/'.$_POST["filename"].'.webm';
                     echo "really problem";
-                    $mergedFile = 'uploads/'.$_POST["filename"].'-merged.webm';
+                    $mergedFile = 'uploads/'.$_POST['filename']. '-merged.webm';
                     
                     // ffmpeg depends on yasm
                     // libvpx depends on libvorbis
@@ -81,7 +82,7 @@
                         $cmd = ' -i '.$audioFile.' -i '.$videoFile.' -c:v mpeg4 -c:a vorbis -b:v 64k -b:a 12k -strict experimental '.$mergedFile;
                     }
                     
-                    exec('ffmpeg '.$cmd.' 2>&1', $out, $ret);
+                    exec('/root/bin/ffmpeg '.$cmd.' 2>&1', $out, $ret);
                     if ($ret){
                         echo "There was a problem!\n";
                         print_r($cmd.'\n');

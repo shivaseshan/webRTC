@@ -567,15 +567,15 @@ $( document ).ready(function() {
   });
 });
   
-//var rafId;
-//var frames = [];
+var audioRecorder;
 var videoRecorder;
 
-function PostBlob(blob, fileType, fileName) {
+function PostBlob(audioblob, videoblob, fileName) {
   // FormData
   var formData = new FormData();
-  formData.append(fileType + '-filename', fileName);
-  formData.append(fileType + '-blob', blob);
+  formData.append('filename', fileName);
+  formData.append('audio-blob', audioblob);
+  formData.append('video-blob', videoblob);
   xhr('combineAudioVideo.php', formData);
 }
 
@@ -592,19 +592,6 @@ function xhr(url, data) {
 }
 
 function recordVideo() {
-  /*frames = []; // clear existing frames;
-  function drawVideoFrame(time) {
-    var video = document.getElementById('localVideo');
-    var canvas = document.getElementById('photo');
-    canvas.height = video.videoHeight;
-    canvas.width = video.videoWidth;
-    rafId = requestAnimationFrame(drawVideoFrame);
-    canvas.getContext('2d').drawImage(video, 0, 0);
-    var url = canvas.toDataURL('image/webp', 1);
-
-    frames.push(url);
-  };
-  rafId = requestAnimationFrame(drawVideoFrame);*/
   document.getElementById("stop-record").hidden = false;
   document.getElementById("start-record").hidden = true;
   var video = document.getElementById('localVideo');
@@ -624,38 +611,6 @@ function recordVideo() {
   videoRecorder.startRecording();
 }
 
-function stopRecordingVideo() {
-  /*
-  cancelAnimationFrame(rafId);  // Note: not using vendor prefixes!
-  var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
-  var url = window.URL.createObjectURL(webmBlob);
-
-  var video = document.createElement('video');
-  video.src = url;
-  document.body.appendChild(video);
-
-  var downloadLink = document.createElement('a');
-  downloadLink.download = 'capture.webm';
-  downloadLink.textContent = '[ download video ]';
-  downloadLink.title = 'Download your .webm video';
-  downloadLink.href = url;
-  var p = document.createElement('p');
-  p.appendChild(downloadLink);
-  document.body.appendChild(p);*/
-  var video = document.getElementById("video");
-  document.getElementById("stop-record").hidden = true;
-  document.getElementById("start-record").hidden = false;
-  if (videoRecorder)
-      videoRecorder.stopRecording(function(url) {
-          video.src = url;
-          video.play();       
-          document.getElementById('video-url-preview').innerHTML = '<a href="' + url + '" target="_blank">Recorded Video URL</a>';
-          PostBlob(videoRecorder.getBlob(), 'video', 'filename.webm');
-      });  
-}
-
-var audioRecorder;
-
 function recordAudio() {
   var stream = new window.MediaStream(localStream.getAudioTracks());
 
@@ -667,29 +622,24 @@ function recordAudio() {
   audioRecorder.startRecording();
 }
 
-function stopRecordingAudio() {
-  var audio = document.getElementById("audio");
+function stopRecording() {
+  var fileName = Math.round(Math.random() * 99999999) + 99999999;
 
   if (audioRecorder)
-      audioRecorder.stopRecording(function(url) {
-          audio.src = url;
-          audio.muted = false;
-          audio.play();  
-          document.getElementById('audio-url-preview').innerHTML = '<a href="' + url + '" target="_blank">Recorded Audio URL</a>';
-          PostBlob(audioRecorder.getBlob(), 'audio', 'audio.wav');
+      audioRecorder.stopRecording(function() {
+          videoRecorder.stopRecording(function() {
+            document.getElementById("stop-record").hidden = true;
+            document.getElementById("start-record").hidden = false;
+            PostBlob(audioRecorder.getBlob(), videoRecorder.getBlob(), fileName);
+          });
+          
       });
 }
 
 function initEvents() {
-  document.getElementById("start-record").addEventListener('click', recordVideo);
   document.getElementById("start-record").addEventListener('click', recordAudio);
-  document.getElementById("stop-record").addEventListener('click', stopRecordingVideo);
-  document.getElementById("stop-record").addEventListener('click', stopRecordingAudio);
+  document.getElementById("start-record").addEventListener('click', recordVideo);
+  document.getElementById("stop-record").addEventListener('click', stopRecording);
 }
 
 initEvents(); 
-
-
-
-
-
