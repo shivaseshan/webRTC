@@ -14,22 +14,19 @@ $("#edit-password").on("click", function () {
 	$("#password").attr("disabled", false)
 	$("#confirm-password").attr("disabled", false)
 });
+
 $(function () {
-                $('#datetimepicker1').datetimepicker({
-                });
-            });
-function gofullscreen(id)
-    	{
-    		var element=document.getElementById(id);
+        $('#datetimepicker1').datetimepicker({
+	});
+});
 
-
-    		if (element.mozRequestFullScreen) 
-    	{
-      element.mozRequestFullScreen();
-    	} else if (element.webkitRequestFullScreen) 
-    	{
-      element.webkitRequestFullScreen();
+function gofullscreen(id) {
+    	var element=document.getElementById(id);
+    	if (element.mozRequestFullScreen) {
+      		element.mozRequestFullScreen();
+    	} 
+	else if (element.webkitRequestFullScreen) {
+      		element.webkitRequestFullScreen();
     	}  
     	element.play();
-
-    }
+}

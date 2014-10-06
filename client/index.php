@@ -1,8 +1,10 @@
 <?php 
-  include 'includes/connect.php';
+  include("includes/connect.php");
   $title = "Home Page";
   include("includes/header.php"); 
 ?>
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
 
 <body>
   <!--<div class="container">

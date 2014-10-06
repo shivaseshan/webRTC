@@ -1,0 +1,12 @@
+.margin-top-01 {
+	margin-top: 1%;
+}
+
+.form-control {
+	margin-top: 10px;
+	width: auto !important;
+}
+
+label {
+	float: left !important;
+}

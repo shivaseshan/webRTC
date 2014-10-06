@@ -4,40 +4,32 @@
 	include("includes/header.php");
 	include("includes/connect.php");
 ?>
-<?php include("includes/connect.php"); ?>
+		<link rel="stylesheet" type="text/css" href="css/dashboard.css">
+	</head>
+	
 	<body>
 			<?php if($_SESSION['login_user'] == "") {
 				echo "Login with proper credentials";
-			}
-						
-
+			}				
 			else {
-
-			$user_name=$_SESSION['login_user'];
-	      	$result_userid = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='$user_name'");
-	      	while($row_userid = mysqli_fetch_array($result_userid))
-	      	  {
-
-	      	 		$user_id=$row_userid['user_id'];
-	      	 		
-	      	 		
-
-	      	  }
-
-			?>	
-<?php
-			if(isset($_POST['create_event']))
+				$user_name=$_SESSION['login_user'];
+		      	$result_userid = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='$user_name'");
+		      	while($row_userid = mysqli_fetch_array($result_userid)) {
+		      	 		$user_id=$row_userid['user_id'];	      
+		      	}
+				
+				if(isset($_POST['create_event'])) {
+					$s_time=strtotime($_POST['stime']);
+					$e_time=strtotime($_POST['etime']);
+					echo $s_time; echo $e_time;
+					$insert=mysqli_query($conn,"INSERT INTO `Events`(`event_name`,`start_time`, `end_time`, `user_id`, `event_description`, `event_room`) VALUES ('{$_POST['ename']}','{$_POST['stime']}','{$_POST['etime']}','{$user_id}','{$_POST['edesc']}','{$_POST['ename']}'");
+					if (!$insert)
 						{
-							$s_time=strtotime($_POST['stime']);
-							$e_time=strtotime($_POST['etime']);
-							echo $s_time; echo $e_time;
-							$insert=mysqli_query($conn,"INSERT INTO `Events`(`event_name`,`start_time`, `end_time`, `user_id`, `event_description`, `event_room`) VALUES ('{$_POST['ename']}','{$_POST['stime']}','{$_POST['etime']}','{$user_id}','{$_POST['edesc']}','{$_POST['ename']}'");
-								if (!$insert)
-									{
-									 	die('Invalid query: ' . mysql_error());
-									}
+						 	die('Invalid query: ' . mysql_error());
 						}
-					?>
+				}
+			?>
+			
 			<nav class="navbar navbar-default" role="navigation">
 				<div class="container-fluid" style="float: left; font-size: large;">
 					Welcome <?php echo $_SESSION['login_user'];?>
@@ -59,28 +51,25 @@
 			  <div class="tab-pane active" id="dashboard">
 			  	<a href="" data-toggle="modal" data-target="#myModal" style="float:right;">Create Event</a>
 			  	<p> Upcoming Events! </p>
-		<?php
-	      	 
-	        $result = mysqli_query($conn, "SELECT * FROM Events WHERE user_id='$user_id'");
-	        if (!$result)
-	        {
-	          die('Invalid query: ' . mysqli_error());
-	        }
+				<?php  	 
+			        $result = mysqli_query($conn, "SELECT * FROM Events WHERE user_id='$user_id'");
+			        if (!$result)
+			        {
+			          die('Invalid query: ' . mysqli_error());
+			        }
 
-	        while($row = mysqli_fetch_array($result)) 
-	        {
+			        while($row = mysqli_fetch_array($result)) 
+			        {
 
-	        	if (time() > strtotime($row[start_time]))
-	        	{
-	        	$room_redirect="./broadcast.html?room=".$row[event_room];
-	        echo "<div class=' col-md-6 well' >";
-			echo "<a href=".$room_redirect.">".$row[event_name]." ".$row[start_time]."</a>";
-	        echo "</div>";
-	        }
-	        }
-
-
-         ?>
+			        	if (time() > strtotime($row[start_time]))
+			        	{
+				        	$room_redirect="./broadcast.html?room=".$row[event_room];
+					        echo "<div class=' col-md-6 well' >";
+							echo "<a href=".$room_redirect.">".$row[event_name]." ".$row[start_time]."</a>";
+					        echo "</div>";
+			        	}
+			        }
+		         ?>
 			  	
 			  	<div class="modal fade" id="myModal">
 						<div class="modal-dialog">
@@ -129,59 +118,57 @@
 								</div>
 							</div>
 						</div>
+			  	<p> Broadcast currently Live ! </p>
+				<a href="./broadcast.php?room=test"><img src="./images/video_poster.png"></a>
 			  </div>
 			  
 			  <div class="tab-pane" id="pre-recorded-videos">
 		  			<div class="container">
-    <div class="row">
-    	<div  class="col-md-12">
-    		<ol class="breadcrumb">
-    			<li style="font-size:18px;"> Your Videos </li>
-    		</ol>
-    	</div>
-    </div>
-  </div>
+					    <div class="row">
+					    	<div  class="col-md-12">
+					    		<ol class="breadcrumb">
+					    			<li style="font-size:18px;"> Your Videos </li>
+					    		</ol>
+					    	</div>
+					    </div>
+					  </div>
 
-  <div class="container">
-    <div class="row">
-    	<?php
-    	$y=1;
-      	$user_name=$_SESSION['login_user'];
-      	$result_userid = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='$user_name'");
-      	 while($row_userid = mysqli_fetch_array($result_userid))
-      	  {
+					  <div class="container">
+					    <div class="row">
+					    	<?php
+					    	$y=1;
+					      	$user_name=$_SESSION['login_user'];
+					      	$result_userid = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='$user_name'");
+					      	while($row_userid = mysqli_fetch_array($result_userid))
+					      	{
+					      	 		$user_id=$row_userid['user_id'];					      	 		
+					      	}
+					        $result = mysqli_query($conn, "SELECT * FROM video WHERE user_id='$user_id'");
+					        if (!$result)
+					        {
+					          die('Invalid query: ' . mysqli_error());
+					        }
 
-      	 		$user_id=$row_userid['user_id'];
-      	 		
-      	 		
+					        while($row = mysqli_fetch_array($result)) 
+					        {
+					          $src="./videos/".$row['source'];
 
-      	  }
-        $result = mysqli_query($conn, "SELECT * FROM video WHERE user_id='$user_id'");
-        if (!$result)
-        {
-          die('Invalid query: ' . mysqli_error());
-        }
+					        $id="video_music".$i;
 
-        while($row = mysqli_fetch_array($result)) 
-        {
-          $src="./videos/".$row['source'];
+					        	echo '<div class="col-md-4">';
 
-        $id="video_music".$i;
-
-        	echo '<div class="col-md-4">';
-
-        	echo '<div class="flex-video widescreen" style="margin: 0 auto;">';
-        	echo '<video id='.$id.' width="320" height="240" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
-        	echo '<source  src='.$src.' type="video/mp4">';
-        	echo '</video>';
-        	echo '</div>';
-          echo '</div>'; 
-        	$i++;
-        }
-      ?>
-    </div>
-  </div>
-  <br>
+					        	echo '<div class="flex-video widescreen" style="margin: 0 auto;">';
+					        	echo '<video id='.$id.' width="320" height="240" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
+					        	echo '<source  src='.$src.' type="video/mp4">';
+					        	echo '</video>';
+					        	echo '</div>';
+					          	echo '</div>'; 
+					        	$i++;
+					        }
+					      ?>
+					    </div>
+					  </div>
+ 					 <br>
 			  </div>
 			  
 			  <div class="tab-pane" id="user-profile">
@@ -198,32 +185,32 @@
 		  		<form role="form" method="post" action="dashboard.php">
 		  		  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="first-name">First Name</label>
-				    <input type="text" class="form-control col-md-4" name="first-name" id="first-name" value="<?php echo $row[2]; ?>" disabled>
+				    <input type="text" class="form-control col-md-4" name="first-name" id="first-name" placeholder="Enter First Name" value="<?php echo $row[2]; ?>" disabled>
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn btn-default" id="edit-first-name">Edit</a>
 		  		  </div>
 				  
 				  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="last-name">Last Name</label>
-				    <input type="text" class="form-control col-md-4" name="last-name" id="last-name" value="<?php echo $row[3]; ?>" disabled>
+				    <input type="text" class="form-control col-md-4" name="last-name" id="last-name" placeholder="Enter Last Name" value="<?php echo $row[3]; ?>" disabled>
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn" id="edit-last-name">Edit</a>
 				  </div>
 				  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="email">E Mail</label>
-				    <input type="email" class="form-control col-md-4" name="email" id="email" value="<?php echo $row[4]; ?>" disabled>
+				    <input type="email" class="form-control col-md-4" name="email" id="email" placeholder="Enter Email" value="<?php echo $row[4]; ?>" disabled>
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn" id="edit-email">Edit</a>
 				  </div>
 				  <div class="row">
-				    <label class="col-md-2 margin-top-01" for="password">Password</label>
-				    <input type="password" class="form-control col-md-4" name="password" id="password" value="<?php echo $row[5]; ?>" disabled> 
+				    <label class="col-md-2 margin-top-01" for="password">New Password</label>
+				    <input type="password" class="form-control col-md-4" name="password" id="password" placeholder="Enter Password" disabled required> 
 				    <a class="col-md-offset-1 col-md-1 margin-top-01" type="btn" id="edit-password">Edit</a>
 				  </div>
 				  <div class="row">
 				    <label class="col-md-2 margin-top-01" for="confirm-password">Confirm Password</label>
-				    <input type="password" class="form-control col-md-4" id="confirm-password" value="<?php echo $row[5]; ?>" disabled> 
+				    <input type="password" class="form-control col-md-4" id="confirm-password" placeholder="Confirm Password" disabled required> 
 				  </div>
 				  <br><br>
 				  <div class="col-md-6 text-center">
-				  	<button type="submit" name="save" class="btn btn-default">Save</button>
+				  	<button type="submit" name="save" id="save" class="btn btn-default">Save</button>
 				  </div>
 				</form>
 			  </div>
@@ -233,8 +220,13 @@
 			  		$firstName = $_POST['first-name'];
 			  		$lastName = $_POST['last-name'];
 			  		$email = $_POST['email'];
-			  		$password = md5($_POST['password']);
-			  		$result = mysqli_query($conn, "UPDATE user SET first_name='$firstName', last_name='$lastName', email_id='$email', password='$password' WHERE user_name='$username'");
+			  		if ( isset($_POST['password']) ) {
+			  			$password = md5($_POST['password']);
+			  			$result = mysqli_query($conn, "UPDATE user SET first_name='$firstName', last_name='$lastName', email_id='$email', password='$password' WHERE user_name='$username'");
+			  		}
+			  		else
+			  			$result = mysqli_query($conn, "UPDATE user SET first_name='$firstName', last_name='$lastName', email_id='$email' WHERE user_name='$username'");	
+
 					if (!$result) {
 						die('Invalid query: ' . mysql_error());
 					}
@@ -244,11 +236,9 @@
 			<?php } ?>
 			<script type="text/javascript" src="js/dashboard.js"></script>
 			<script type="text/javascript">
-										    $(".form_datetime").datetimepicker({
-										        format: "dd MM yyyy - hh:ii"
-										   
-										    
-            							 });
-										</script> 
+			    $(".form_datetime").datetimepicker({
+			        format: "dd MM yyyy - hh:ii"
+			 	});
+			</script> 
 	</body>
 </html>
