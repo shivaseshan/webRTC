@@ -22,9 +22,9 @@
       <button id="start-record" class="btn btn-default">Record Video</button>
       <button id="stop-record" class="btn btn-default" style="display: none;">Stop Video</button>
       <button id="hang-up" class="btn btn-default btn-danger">End</button>
-      <br>
+      <br><br>
 
-      <textarea id="chatbox"></textarea>
+      <textarea id="chatbox"></textarea> <br>
       <input id="dataChannelSend" type="text" size="63" disabled placeholder="Enter some text, then press Send."/>
       <button id="sendButton" disabled>Send</button>
       

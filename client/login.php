@@ -5,11 +5,12 @@
 	$title = "Login Page";
 	$_SESSION['login_user'] ="";
 	include("includes/header.php"); 
+	include("includes/connect.php");
 ?>
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
 	</head>
 	
 	<body>
-	<?php include("includes/connect.php"); ?>
 	<?php 
 		$noLink = true; 
 		include("includes/navbar.php"); 
