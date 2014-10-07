@@ -1,7 +1,7 @@
 // This is called with the results from from FB.getLoginStatus().
-  function statusChangeCallback(response) {
-    console.log('statusChangeCallback');
-    console.log(response);
+function statusChangeCallback(response) {
+  console.log('statusChangeCallback');
+  console.log(response);
     // The response object is returned with a status field that lets the
     // app know the current login status of the person.
     // Full docs on the response object can be found in the documentation
@@ -13,13 +13,19 @@
       // The person is logged into Facebook, but not your app.
       //document.getElementById('status').innerHTML = 'Please log ' +
       //  'into this app.';
-      FB.login();
+      /*FB.login(function(response) {
+        // handle the response
+        console.log('res',response);
+        }, {scope: 'email'});*/
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
       //document.getElementById('status').innerHTML = 'Please log ' +
       //  'into Facebook.';
-      FB.login();
+      /*FB.login(function(response) {
+        console.log('res',response);
+        // handle the response
+        }, {scope: 'email'});*/
     }
   }
 
@@ -33,7 +39,7 @@
   }
 
   window.fbAsyncInit = function() {
-  FB.init({
+    FB.init({
     appId      : '766445996750696',
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
@@ -57,7 +63,7 @@
     statusChangeCallback(response);
   });
 
-  };
+};
 
   // Load the SDK asynchronously
   (function(d, s, id) {
@@ -71,10 +77,64 @@
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
+    //console.log('Welcome!  Fetching your information.... ');
+    //LodingAnimate(); //Animate login
     FB.api('/me', function(response) {
-      console.log('Successful login for: ' + response.name);
-      document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';
+      //console.log('Successful login for: ' + response.name);
+      if (response.email == null) {
+        //Facbeook user email is empty, you can check something like this.
+        alert("You must allow us to access your email id!"); 
+        //ResetAnimate();
+
+      }else{
+        $.ajax({
+          // the URL for the request
+          url: "process.php",
+
+          // the data to send (will be converted to a query string)
+          data: {
+            email: response.email,
+            first_name: response.first_name,
+            last_name: response.last_name,
+            fbid: response.id
+          },
+
+          // whether this is a POST or GET request
+          type: "POST",
+
+          // the type of data we expect back
+          // dataType : "json",
+
+          // code to run if the request succeeds;
+          // the response is passed to the function
+          success: function( json ) {
+              window.location.replace("dashboard.php");
+              //alert("success",json);
+            }, 
+
+          // code to run if the request fails; the raw request and
+          // status codes are passed to the function
+          error: function( xhr, status, errorThrown ) {
+            alert( "Sorry, there was a problem!" );
+            // console.log( "Error: " + errorThrown );
+            // console.log( "Status: " + status );
+            // console.dir( xhr );
+          }
+        });
+      }
     });
+  }
+
+  //Show loading Image
+  function LodingAnimate() 
+  {
+      $("#LoginButton").hide(); //hide login button once user authorize the application
+      $("#results").html('<img src="img/ajax-loader.gif" /> Please Wait Connecting...'); //show loading image while we process user
+    }
+
+  //Reset User button
+  function ResetAnimate() 
+  {
+      $("#LoginButton").show(); //Show login button 
+      $("#results").html(''); //reset element html
   }
