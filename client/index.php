@@ -1,4 +1,5 @@
 <?php 
+error_reporting(0);
   include("includes/connect.php");
   $title = "Home Page";
   include("includes/header.php"); 
@@ -21,6 +22,39 @@
     $noLink = false;
     include("includes/navbar.php"); 
   ?>
+  <div class="container">
+    <div class="row">
+      <div  class="col-md-12">
+        <ol class="breadcrumb">
+          <li style="font-size:18px;"> Upcoming Events By Users </li>
+        </ol>
+         <?php 
+
+         
+$result_eventlist = mysqli_query($conn, "SELECT * FROM Events ");
+          if (!$result_eventlist)
+        {
+          die('Invalid query: ' . mysqli_error());
+        }
+
+        while($row_eventlist = mysqli_fetch_array($result_eventlist)) {
+
+          $room_redirect="./broadcast.php?room=".$row_eventlist[event_room];
+          $user_id=$row_eventlist[user_id];
+$result_userid = mysqli_query($conn, "SELECT user_name FROM user WHERE user_id='$user_id'");
+            while($row_userid = mysqli_fetch_array($result_userid)) {
+                $user_name=$row_userid['user_name'];        
+            }
+            echo '<div class="col-md-4">';
+          echo "<a href=".$room_redirect.">".$row_eventlist[event_name]." ".$row_eventlist[start_date]." ".$row_eventlist[start_time]."by ".$user_name."</a>";
+          echo '</div>';
+          
+
+        }
+         ?>
+      </div>
+    </div>
+  </div>
   <div class="container">
     <div class="row">
     	<div  class="col-md-12">

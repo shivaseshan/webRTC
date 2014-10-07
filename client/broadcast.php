@@ -1,5 +1,9 @@
 <?php
   session_start();
+    if($_SESSION['login_user'] == "") {
+      
+        header('Location: ./login.php');
+      }
   $title = "WebRTC client";
   include("includes/header.php"); 
 ?>
@@ -8,7 +12,8 @@
 
   <body>
     <?php if($_SESSION['login_user'] == "") {
-        echo "Login with proper credentials";
+
+        header('Location: ./login.php');
       }
       else {
         include("includes/navbar-logged-in.php");

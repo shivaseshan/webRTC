@@ -521,8 +521,8 @@ function removeCN(sdpLines, mLineIndex) {
 }
 
 $( document ).ready(function() {
-  if (!isInitiator)
-    document.getElementById("start-record").style.display = "none";
+  //if (!isInitiator)
+   // document.getElementById("start-record").style.display = "none";
 
   if (localStream == "undefined") {
     document.getElementById("disable-audio").disabled = true;
@@ -578,13 +578,19 @@ $( document ).ready(function() {
 var audioRecorder;
 var videoRecorder;
 
+var room = window.location.search.replace("?", "");
+room = room.substring(5);
+  alert(room);
+
 function PostBlob(audioblob, videoblob, fileName) {
   // FormData
   var formData = new FormData();
   formData.append('filename', fileName);
   formData.append('audio-blob', audioblob);
   formData.append('video-blob', videoblob);
-  xhr('combineAudioVideo.php', formData);
+  formData.append('room-name',room);
+ 
+ xhr('combineAudioVideo.php', formData);
 }
 
 function xhr(url, data) {

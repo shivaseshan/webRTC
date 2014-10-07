@@ -1,4 +1,6 @@
 <?php
+session_start();
+include("includes/connect.php");
 	// Muaz Khan         - www.MuazKhan.com
     // MIT License       - www.WebRTC-Experiment.com/licence
     // Documentation     - github.com/muaz-khan/WebRTC-Experiment/tree/master/RecordRTC
@@ -51,7 +53,7 @@
     }
     // if it is audio-blob
     if (isset($_FILES["audio-blob"])) {
-        $uploadDirectory = 'uploads/'.$_POST["filename"].'.wav';
+        $uploadDirectory = 'videos/'.$_POST["filename"].'.wav';
         if (!move_uploaded_file($_FILES["audio-blob"]["tmp_name"], $uploadDirectory)) {
             echo("Problem writing audio file to disk!");
         }
@@ -60,15 +62,15 @@
 			echo "here";
            if (isset($_FILES["video-blob"])) {
 			    echo "inside video";
-                $uploadDirectory = 'uploads/'.$_POST["filename"].'.webm';
+                $uploadDirectory = 'videos/'.$_POST["filename"].'.webm';
                 if (!move_uploaded_file($_FILES["video-blob"]["tmp_name"], $uploadDirectory)) {
                     echo("Problem writing video file to disk!");
                 }
                 else {
-                    $audioFile = 'uploads/'.$_POST["filename"].'.wav';
-                    $videoFile = 'uploads/'.$_POST["filename"].'.webm';
+                    $audioFile = 'videos/'.$_POST["filename"].'.wav';
+                    $videoFile = 'videos/'.$_POST["filename"].'.webm';
                     echo "really problem";
-                    $mergedFile = 'uploads/'.$_POST['filename']. '-merged.webm';
+                    $mergedFile = 'videos/'.$_POST['filename']. '-merged.webm';
                     
                     // ffmpeg depends on yasm
                     // libvpx depends on libvorbis
@@ -89,7 +91,19 @@
                         print_r($out);
                     } else {
                         echo "Ffmpeg successfully merged audi/video files into single WebM container!\n";
-                        
+$filevideo=$_POST["filename"]."-merged.webm";
+//echo $filevideo." is the filename";
+                      if(isset($_SESSION['login_user']))
+			{
+				$result2=mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='{$_SESSION['login_user']}'");
+						$row = mysqli_fetch_array($result2);			
+//echo "user id is". " ". $row[0];
+//$abcd=INSERT INTO video (name,source,category,duration,video_id,user_id) VALUES ('{$_POST['room-name']}','$filevideo','General','10','$row[0]');
+
+
+$insert=mysqli_query($conn,"INSERT INTO video (name,source,category,duration,user_id) VALUES ('{$_POST['room-name']}','$filevideo','General','10','$row[0]')");
+//echo $abcd;
+			}  
                         unlink($audioFile);
                         unlink($videoFile);
                     }
