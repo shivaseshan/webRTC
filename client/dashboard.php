@@ -18,15 +18,21 @@
 		      	 		$user_id=$row_userid['user_id'];	      
 		      	}
 				
-				if(isset($_POST['create_event'])) {
-					$s_time=strtotime($_POST['stime']);
-					$e_time=strtotime($_POST['etime']);
-					echo $s_time; echo $e_time;
-					$insert=mysqli_query($conn,"INSERT INTO `Events`(`event_name`,`start_time`, `end_time`, `user_id`, `event_description`, `event_room`) VALUES ('{$_POST['ename']}','{$_POST['stime']}','{$_POST['etime']}','{$user_id}','{$_POST['edesc']}','{$_POST['ename']}'");
+				if(isset($_POST['create_event'])) 
+				{
+					$s_date=$_POST['sdate'];
+					 $s_time=$_POST['stime'];
+					 $e_time=$_POST['etime']; 
+					 $event_name=$_POST['ename'];
+					$insert=mysqli_query($conn,"INSERT INTO `Events`(`event_name`,`start_date`,`start_time`, `end_time`, `user_id`, `event_description`, `event_room`) VALUES ('$event_name','$s_date','$s_time','$e_time','$user_id','{$_POST['edesc']}','$event_name')");
 					if (!$insert)
 						{
 						 	die('Invalid query: ' . mysql_error());
 						}
+					else
+					{
+						echo "<p class='bg-success'> Congratulations.....Event Created</p>";
+					}	
 				}
 			?>
 			
@@ -43,13 +49,15 @@
 			<ul class="nav nav-tabs" role="tablist">
 			  <li class="active"><a href="#dashboard" role="tab" data-toggle="tab">Dashboard</a></li>
 			  <li><a href="#pre-recorded-videos" role="tab" data-toggle="tab">Pre-Recorded Videos</a></li>
+			  <li><a href="#your-videos" role="tab" data-toggle="tab">Your Videos</a></li>
 			  <li><a href="#user-profile" role="tab" data-toggle="tab">User Profile</a></li>
 			</ul>
 
 			<!-- Tab panes -->
 			<div class="tab-content">
 			  <div class="tab-pane active" id="dashboard">
-			  	<a href="" data-toggle="modal" data-target="#myModal" style="float:right;">Create Event</a>
+			  	<a href="" data-toggle="modal" data-target="#myModal" class="btn btn-default" style="float:right; margin-right:2%; margin-top:1%;">Create Event</a>
+			  	<br>
 			  	<p> Upcoming Events! </p>
 				<?php  	 
 			        $result = mysqli_query($conn, "SELECT * FROM Events WHERE user_id='$user_id'");
@@ -61,11 +69,11 @@
 			        while($row = mysqli_fetch_array($result)) 
 			        {
 
-			        	if (time() > strtotime($row[start_time]))
+			        	if (time() < strtotime($row[start_time]))
 			        	{
-				        	$room_redirect="./broadcast.html?room=".$row[event_room];
+				        	$room_redirect="./broadcast.php?room=".$row[event_room];
 					        echo "<div class=' col-md-6 well' >";
-							echo "<a href=".$room_redirect.">".$row[event_name]." ".$row[start_time]."</a>";
+							echo "<a href=".$room_redirect.">".$row[event_name]." ".$row[start_date]." ".$row[start_time]."</a>";
 					        echo "</div>";
 			        	}
 			        }
@@ -89,7 +97,14 @@
 										<div class="row">
 											<div class="col-md-10">
 										<div class="input-append date form_datetime">
-										    <input class="form-control" type="datetime" placeholder="Start time" id="stime" name="stime" value="" >
+										    <input class="form-control" type="date" placeholder="Start Date" id="sdate" name="sdate" value="" >
+										    <span class="add-on"><i class="icon-th"></i></span>
+										</div></div></div>
+
+										<div class="row">
+											<div class="col-md-10">
+										<div class="input-append date form_datetime">
+										    <input class="form-control" type="time" placeholder="Start time" id="stime" name="stime" value="" >
 										    <span class="add-on"><i class="icon-th"></i></span>
 										</div></div></div>
    
@@ -98,7 +113,7 @@
 										<div class="row">
 											<div class="col-md-10">
 										<div class="input-append date form_datetime">
-										    <input class="form-control" type="datetime" placeholder="End time" id="etime" name="etime" value="" >
+										    <input class="form-control" type="time" placeholder="end time" id="etime" name="etime" value="" >
 										    <span class="add-on"><i class="icon-th"></i></span>
 										</div></div></div>
 										<div class="row">
@@ -118,22 +133,21 @@
 								</div>
 							</div>
 						</div>
-			  	<p> Broadcast currently Live ! </p>
-				<a href="./broadcast.php?room=test"><img src="./images/video_poster.png"></a>
+			  	
 			  </div>
-			  
-			  <div class="tab-pane" id="pre-recorded-videos">
+
+			  <div class="tab-pane" id="your-videos">
 		  			<div class="container">
 					    <div class="row">
 					    	<div  class="col-md-12">
-					    		<ol class="breadcrumb">
-					    			<li style="font-size:18px;"> Your Videos </li>
+					    			<ol class="breadcrumb">
+					    				<li style="font-size:18px;"> Your Videos </li>
 					    		</ol>
 					    	</div>
-					    </div>
-					  </div>
+					    		</div>
+					    			</div>
 
-					  <div class="container">
+					    			<div class="container">
 					    <div class="row">
 					    	<?php
 					    	$y=1;
@@ -144,6 +158,53 @@
 					      	 		$user_id=$row_userid['user_id'];					      	 		
 					      	}
 					        $result = mysqli_query($conn, "SELECT * FROM video WHERE user_id='$user_id'");
+					        if (!$result)
+					        {
+					          die('Invalid query: ' . mysqli_error());
+					        }
+
+					        while($row = mysqli_fetch_array($result)) 
+					        {
+					          $src="./videos/".$row['source'];
+
+					        $id="your_video".$i;
+
+					        	echo '<div class="col-md-4">';
+
+					        	echo '<div class="flex-video widescreen" style="margin: 0 auto;">';
+					        	echo '<video id='.$id.' width="320" height="240" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
+					        	echo '<source  src='.$src.' type="video/mp4">';
+					        	echo '</video>';
+					        	echo '</div>';
+					          	echo '</div>'; 
+					        	$i++;
+					        }
+					      ?>
+					    </div>
+					  </div>
+ 					 <br>
+
+			</div>
+
+
+			  
+			  <div class="tab-pane" id="pre-recorded-videos">
+		  			<div class="container">
+					    <div class="row">
+					    	<div  class="col-md-12">
+					    		<ol class="breadcrumb">
+					    			<li style="font-size:18px;"> Pre-recorded Videos </li>
+					    		</ol>
+					    	</div>
+					    </div>
+					  </div>
+
+					  <div class="container">
+					    <div class="row">
+					    	<?php
+					    	$y=1;
+					      	
+					        $result = mysqli_query($conn, "SELECT * FROM video ");
 					        if (!$result)
 					        {
 					          die('Invalid query: ' . mysqli_error());
@@ -235,10 +296,6 @@
 			</div>
 			<?php } ?>
 			<script type="text/javascript" src="js/dashboard.js"></script>
-			<script type="text/javascript">
-			    $(".form_datetime").datetimepicker({
-			        format: "dd MM yyyy - hh:ii"
-			 	});
-			</script> 
+			
 	</body>
 </html>
