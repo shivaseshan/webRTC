@@ -259,9 +259,10 @@ function createPeerConnection() {
 }
 
 function sendData() {
-  var data = sendTextarea.value;
+  var data = document.getElementById("username").firstChild.nodeValue + ": " + sendTextarea.value;
   sendChannel.send(data);
   chatbox.value = chatbox.value + '\n' + data;
+  sendTextarea.value = null;
   trace('Sent data: ' + data);
 }
 
@@ -520,6 +521,9 @@ function removeCN(sdpLines, mLineIndex) {
 }
 
 $( document ).ready(function() {
+  if (!isInitiator)
+    document.getElementById("start-record").style.display = "none";
+
   if (localStream == "undefined") {
     document.getElementById("disable-audio").disabled = true;
     document.getElementById("disable-video").disabled = true;
