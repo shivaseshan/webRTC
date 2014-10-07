@@ -15,10 +15,6 @@ $("#edit-password").on("click", function () {
 	$("#confirm-password").attr("disabled", false)
 });
 
-$(function () {
-        $('#datetimepicker1').datetimepicker({
-	});
-});
 
 function gofullscreen(id) {
     	var element=document.getElementById(id);
