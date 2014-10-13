@@ -1,3 +1,4 @@
+ <!-- This is the homepage for the website which will include pre-recorded videos of different categories-->
 <?php 
   // include section
   include("includes/connect.php");  // for database connection
@@ -22,6 +23,9 @@
     $noLink = false;
     include("includes/navbar.php"); 
   ?>
+  
+   <!-- This part shows the list of upcoming broadcasting events of different users -->
+  
   <div class="container">
     <div class="row">
       <div  class="col-md-12">
@@ -49,6 +53,9 @@
       </div>
     </div>
   </div>
+  <!-- 
+  This part will display the videos from the general category
+  -->
   <div class="container">
     <div class="row">
     	<div  class="col-md-12">
@@ -87,7 +94,9 @@
     </div>
   </div>
   <br>
-  
+  <!-- 
+  This part will display the videos from the music category 
+  -->
   <div class="container">
     <div class="row">
     	<div  class="col-md-12">
@@ -125,6 +134,9 @@
         }
       ?>
   </body>
+  <!-- 
+  This function will play and open the video in fullscreen once the user will click on the video
+  -->
   <script type="text/javascript">
 
     	function gofullscreen(id)
