@@ -1,3 +1,7 @@
+
+// This is the file which will display the dashboard for the logged in user which will include four tabs 
+// a) Dashboard b) Your videos c) User's videos d) Update profile
+
 <?php
 	// Continuing the session
 	session_start();
@@ -162,7 +166,7 @@
 				    	</div>
 		    		</div>
 				</div>
-
+			<!-- Function to get user's pre-recorded videos from the database -->
 				<div class="container">
 				    <div class="row">
 				    	<?php
@@ -212,7 +216,7 @@
 			    		</div>
 			   		 </div>
 			  	</div>
-
+			<!-- Function to get other user's pre-recorded videos from the database -->
 			 	<div class="container">
 			   		<div class="row">
 				    	<?php
@@ -288,7 +292,7 @@
 				  	<button type="submit" name="save" id="save" class="btn btn-default">Save</button>
 				  </div>
 				</form>
-
+		<!-- Function to save the user's edited information into the database -->
 				  <?php
 				  	if (isset($_POST['save'])) {
 				  		$firstName = $_POST['first-name'];
