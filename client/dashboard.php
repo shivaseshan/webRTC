@@ -1,6 +1,6 @@
 
-// This is the file which will display the dashboard for the logged in user which will include four tabs 
-// a) Dashboard b) Your videos c) User's videos d) Update profile
+<!-- This is the file which will display the dashboard for the logged in user which will include four tabs 
+a) Dashboard b) Your videos c) User's videos d) Update profile -->
 
 <?php
 	// Continuing the session
