@@ -578,10 +578,7 @@ $( document ).ready(function() {
 var audioRecorder;
 var videoRecorder;
 
-var room = window.location.search.replace("?", "");
-room = room.substring(5);
-  alert(room);
-
+// making a form data to send using ajax
 function PostBlob(audioblob, videoblob, fileName) {
   // FormData
   var formData = new FormData();
@@ -590,14 +587,15 @@ function PostBlob(audioblob, videoblob, fileName) {
   formData.append('video-blob', videoblob);
   formData.append('room-name',room);
  
- xhr('combineAudioVideo.php', formData);
+  xhr('combineAudioVideo.php', formData);
 }
 
+// making the ajax request
 function xhr(url, data) {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
       if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          alert(xmlhttp.responseText);
+          //alert(xmlhttp.responseText);
       }
   };
   
@@ -605,6 +603,7 @@ function xhr(url, data) {
   xmlhttp.send(data);
 }
 
+// recording the video track
 function recordVideo() {
   document.getElementById("stop-record").style.display = 'inline-block';
   document.getElementById("start-record").style.display = 'none';
@@ -625,6 +624,7 @@ function recordVideo() {
   videoRecorder.startRecording();
 }
 
+// recording the audio track
 function recordAudio() {
   var stream = new window.MediaStream(localStream.getAudioTracks());
 
@@ -636,6 +636,7 @@ function recordAudio() {
   audioRecorder.startRecording();
 }
 
+// stop recording both audio and video track
 function stopRecording() {
   var fileName = Math.round(Math.random() * 99999999) + 99999999;
 
@@ -650,6 +651,7 @@ function stopRecording() {
       });
 }
 
+// placing all EventListerer inside this function
 function initEvents() {
   document.getElementById("start-record").addEventListener('click', recordAudio);
   document.getElementById("start-record").addEventListener('click', recordVideo);

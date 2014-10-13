@@ -8,5 +8,5 @@
 	<title><?php echo $title ?> </title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 
-	<script type="text/javascript" src="js/jquery/jquery-2.1.1.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="js/bootstrap/bootstrap.min.js"></script>

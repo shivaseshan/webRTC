@@ -1,23 +1,30 @@
 <?php
-  session_start();
+    // Continuing the session
+    session_start();
+
+    // if user is not logged in redirect to login page 
+    // added in the end to give a way
     if($_SESSION['login_user'] == "") {
-      
         header('Location: ./login.php');
-      }
-  $title = "WebRTC client";
-  include("includes/header.php"); 
+    }
+  
+    $title = "WebRTC client";
+    include("includes/header.php");     // for database connection
 ?>
     <link rel='stylesheet' href='css/main.css' />
   </head>
 
   <body>
-    <?php if($_SESSION['login_user'] == "") {
-
-        header('Location: ./login.php');
-      }
-      else {
-        include("includes/navbar-logged-in.php");
-      ?>
+    <?php 
+        // checking if the user has a session id set or not
+        // if he does that means he is coming to this page by logging in
+        // if he doesn't that means he is coming to the page directly through url 
+        if($_SESSION['login_user'] == "") {
+            header('Location: ./login.php');
+        }
+        else {
+            include("includes/navbar-logged-in.php");
+    ?>
       <div id='container'>
         <div id='participants'>
         </div>
@@ -37,7 +44,6 @@
         <textarea id="chatbox"></textarea> <br>
         <input id="dataChannelSend" type="text" size="63" disabled placeholder="Enter some text, then press Send."/>
         <button id="sendButton" disabled>Send</button>
-        
         <!--<textarea id="dataChannelReceive" disabled></textarea> -->
       </div>
 
@@ -48,28 +54,29 @@
       <script src="//cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
 
       <script type="text/javascript">
-      $('#share-screen').click(function() {
+        // to share screen
+        $('#share-screen').click(function() {
             getUserMedia({
-                      video: {
-                          mandatory: {
-                              chromeMediaSource: 'screen',
-                              maxWidth: 1280,
-                              maxHeight: 720
-                          },
-                          optional: []
-                      }
-                    }, function(stream) {
-                          document.getElementById('video').src = window.URL.createObjectURL(stream);;
-                          $('#share_screen').hide();
-                      }, function() {
-                          alert('Error, my friend. Screen stream is not available. Try in latest Chrome with Screen sharing enabled in about:flags.');
-                        }
-                  )
-            });
+                video: {
+                    mandatory: {
+                    chromeMediaSource: 'screen',
+                    maxWidth: 1280,
+                    maxHeight: 720
+                    },
+                    optional: []
+                }
+            }, 
+            
+            function(stream) {
+                  document.getElementById('video').src = window.URL.createObjectURL(stream);;
+                  $('#share_screen').hide();
+            }, 
+
+            function() {
+                  alert('Error, my friend. Screen stream is not available. Try in latest Chrome with Screen sharing enabled in about:flags.');
+            })
+        });
       </script>
-
-
       <?php } ?>
-
   </body>
 </html>
