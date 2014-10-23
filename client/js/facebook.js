@@ -7,7 +7,7 @@ function statusChangeCallback(response) {
     // Full docs on the response object can be found in the documentation
     // for FB.getLoginStatus().
     if (response.status === 'connected') {
-      // Logged into your app and Facebook.
+      // Logged into your app and Facebook
       testAPI();
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
@@ -32,22 +32,25 @@ function statusChangeCallback(response) {
   // This function is called when someone finishes with the Login
   // Button.  See the onlogin handler attached to it in the sample
   // code below.
+
+
   function checkLoginState() {
     FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
     });
   }
 
+
   window.fbAsyncInit = function() {
     FB.init({
     appId      : '766445996750696',
-    cookie     : true,  // enable cookies to allow the server to access 
+    status : true,
+     cookie     :true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
     version    : 'v2.1' // use version 2.1
   });
-
-  // Now that we've initialized the JavaScript SDK, we call 
+// Now that we've initialized the JavaScript SDK, we call 
   // FB.getLoginStatus().  This function gets the state of the
   // person visiting this page and can return one of three states to
   // the callback you provide.  They can be:
@@ -58,19 +61,18 @@ function statusChangeCallback(response) {
   //    your app or not.
   //
   // These three cases are handled in the callback function.
+ FB.getLoginStatus(function(response) {
 
-  FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
   });
-
 };
 
   // Load the SDK asynchronously
   (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
+    js = d.createElement(s); js.id = id;js.async = true;
+    js.src = "//connect.facebook.net/en_US/all.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 
@@ -80,6 +82,7 @@ function statusChangeCallback(response) {
     //console.log('Welcome!  Fetching your information.... ');
     //LodingAnimate(); //Animate login
     FB.api('/me', function(response) {
+//window.location.reload();
       //console.log('Successful login for: ' + response.name);
       if (response.email == null) {
         //Facbeook user email is empty, you can check something like this.
@@ -138,3 +141,8 @@ function statusChangeCallback(response) {
       $("#LoginButton").show(); //Show login button 
       $("#results").html(''); //reset element html
   }
+
+  $('#logout').on('click', function() {
+if(response.status=== 'connected')
+        FB.logout(function(response){}); 
+    });

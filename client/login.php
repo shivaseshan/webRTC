@@ -8,6 +8,7 @@
 	include("includes/connect.php");
 ?>
 		<link rel="stylesheet" type="text/css" href="css/styles.css">
+ <script type="text/javascript" src="js/facebook.js"></script>
 	</head>
 	
 	<body>
@@ -15,7 +16,6 @@
 		$noLink = true; 
 		include("includes/navbar.php"); 
 	?>
-	
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="well col-md-4 col-md-offset-4 margin-top-05">
@@ -30,7 +30,10 @@
 					<div class="inline">
 						<button id="lgn-sbmt" class="btn btn-primary center" name="login" type="submit">Login</button>
 						<br><br>
-						<div class="fb-login-button" data-size="large" data-scope="email" data-show-faces="false" data-auto-logout-link="false">Sign in</div>
+						<!--<div class="fb-login-button" name="fb-login-button" id="fb-login-button" data-size="large" data-scope="email" data-show-faces="false" data-auto-logout-link="false">Sign in</div>-->
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" >
+</fb:login-button>
+
 						<br><br>
 					<!--	<div id="signinButton">
 						  <span
@@ -192,7 +195,7 @@
 			</div>
 		<?php mysqli_close($conn); ?>
 		<script type="text/javascript" src="js/login.js"></script>
-		<script type="text/javascript" src="js/facebook.js"></script>
+		
 		<script type="text/javascript" src="js/google.js"></script>
 	</body> 
 </html>

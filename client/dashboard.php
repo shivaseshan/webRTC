@@ -3,6 +3,7 @@
 	$title = "Dashboard";
 	include("includes/header.php");
 	include("includes/connect.php");
+	error_reporting(0);
 ?>
 		<link rel="stylesheet" type="text/css" href="css/dashboard.css">
 	</head>
@@ -13,7 +14,7 @@
 			}				
 			else {
 				$user_name=$_SESSION['login_user'];
-		      	$result_userid = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='$user_name'");
+		      	$result_userid = mysqli_query($conn, "SELECT user_id FROM user  WHERE user_name='$user_name'");
 		      	while($row_userid = mysqli_fetch_array($result_userid)) {
 		      	 		$user_id=$row_userid['user_id'];	      
 		      	}
@@ -52,7 +53,7 @@
 			  	<br>
 			  	<p> Upcoming Events! </p>
 				<?php  	 
-			        $result = mysqli_query($conn, "SELECT * FROM Events WHERE user_id='$user_id'");
+			        $result = mysqli_query($conn, "SELECT * FROM Events");
 			        if (!$result)
 			        {
 			          die('Invalid query: ' . mysqli_error());
@@ -122,12 +123,7 @@
 											</div>
 										</div>																								
 										
-										<div class="row">
-											<div class="col-md-10">
-												<input  class="form-control" type="text" placeholder="Event Description" id="edesc" name="edesc" size="48">
-												<span id="fnameglyph" class=""></span>
-											</div>
-										</div>
+					
 															
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
