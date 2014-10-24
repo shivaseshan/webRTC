@@ -128,6 +128,15 @@ function statusChangeCallback(response) {
     });
   }
 
+  $("#logout").on("click", function () {
+    function logout() {
+      FB.logout(function(response) {
+        alert("Facebook logout");
+            // Person is now logged out
+        });
+      }
+  });
+   
   //Show loading Image
   function LodingAnimate() 
   {

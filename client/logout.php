@@ -1,13 +1,7 @@
 <?php
 	$title = "Logout Page";
   	include("includes/header.php");   // for html declaration 
-	
 ?>
-	<script type="text/javascript">
-		FB.logout(function(response) {
-	        // Person is now logged out
-	    });
-	</script>
 </head>
 
 <?php
