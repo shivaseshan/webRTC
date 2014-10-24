@@ -1,8 +1,9 @@
+ <!-- This is the homepage for the website which will include pre-recorded videos of different categories-->
 <?php 
-error_reporting(0);
-  include("includes/connect.php");
+  // include section
+  include("includes/connect.php");  // for database connection
   $title = "Home Page";
-  include("includes/header.php"); 
+  include("includes/header.php");   // for html declaration 
 ?>
   <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
@@ -22,39 +23,39 @@ error_reporting(0);
     $noLink = false;
     include("includes/navbar.php"); 
   ?>
+  
+   <!-- This part shows the list of upcoming broadcasting events of different users -->
+  
   <div class="container">
     <div class="row">
       <div  class="col-md-12">
         <ol class="breadcrumb">
           <li style="font-size:18px;"> Upcoming Events By Users </li>
         </ol>
-         <?php 
-
-         
-$result_eventlist = mysqli_query($conn, "SELECT * FROM Events ");
-          if (!$result_eventlist)
-        {
+         <?php          
+        $result_eventlist = mysqli_query($conn, "SELECT * FROM Events ");
+        if (!$result_eventlist) {
           die('Invalid query: ' . mysqli_error());
         }
 
         while($row_eventlist = mysqli_fetch_array($result_eventlist)) {
-
           $room_redirect="./broadcast.php?room=".$row_eventlist[event_room];
           $user_id=$row_eventlist[user_id];
-$result_userid = mysqli_query($conn, "SELECT user_name FROM user WHERE user_id='$user_id'");
-            while($row_userid = mysqli_fetch_array($result_userid)) {
-                $user_name=$row_userid['user_name'];        
-            }
-            echo '<div class="col-md-4">';
+          $result_userid = mysqli_query($conn, "SELECT user_name FROM user WHERE user_id='$user_id'");
+          while($row_userid = mysqli_fetch_array($result_userid)) {
+              $user_name=$row_userid['user_name'];        
+          }
+          echo '<div class="col-md-4">';
           echo "<a href=".$room_redirect.">".$row_eventlist[event_name]." ".$row_eventlist[start_date]." ".$row_eventlist[start_time]."by ".$user_name."</a>";
           echo '</div>';
-          
-
-        }
+         } 
          ?>
       </div>
     </div>
   </div>
+  <!-- 
+  This part will display the videos from the general category
+  -->
   <div class="container">
     <div class="row">
     	<div  class="col-md-12">
@@ -93,7 +94,9 @@ $result_userid = mysqli_query($conn, "SELECT user_name FROM user WHERE user_id='
     </div>
   </div>
   <br>
-  
+  <!-- 
+  This part will display the videos from the music category 
+  -->
   <div class="container">
     <div class="row">
     	<div  class="col-md-12">
@@ -131,6 +134,9 @@ $result_userid = mysqli_query($conn, "SELECT user_name FROM user WHERE user_id='
         }
       ?>
   </body>
+  <!-- 
+  This function will play and open the video in fullscreen once the user will click on the video
+  -->
   <script type="text/javascript">
 
     	function gofullscreen(id)

@@ -1,11 +1,12 @@
-function failureEvents(t,item) {
+//This js file provides validations for the modal used for sign up.
+function failureEvents(t,item) { //adds a cross mark in case a wrong entry is inserted in the form
 	$(t).parent().addClass("has-error");
 	$(t).parent().removeClass("has-success");
 	$(t).parent().find(item).addClass("glyphicon-remove");  
 	$(t).parent().find(item).removeClass("glyphicon-ok");
 }
 
-function successEvents(t,item) {
+function successEvents(t,item) {//adds a tick mark in case of a correct value is entered in the form
 	//console.log(t);
 	$(t).parent().removeClass("has-error");
 	$(t).parent().addClass("has-success");
@@ -20,7 +21,7 @@ $( document ).ready(function() {
 	$("#email").on('change focus keyup',function () {
 		var val = $(this).val();
 		var item1 ="#emailglyph" ;
-		var email = new RegExp(/^[a-zA-Z0-9]+[a-zA-Z0-9_]*\@[a-zA-Z]+\.[a-zA-Z]{2,3}/g);
+		var email = new RegExp(/^[a-zA-Z0-9]+[a-zA-Z0-9_]*\@[a-zA-Z]+\.[a-zA-Z]{2,3}/g); //email regular expression
 
 		$(this).parent().addClass("has-feedback");
 		$(this).parent().find(item1).addClass("glyphicon"); 
@@ -72,7 +73,7 @@ $( document ).ready(function() {
 		$(this).parent().find(item1).addClass("form-control-feedback");
 		if (val=="" ) {//|| item2!=val
 
-			failureEvents(this,item1);
+			failureEvents(this,item1); 
 		}
 		else {
 			successEvents(this,item1);

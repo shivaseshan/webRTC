@@ -1,6 +1,9 @@
 <?php
+    // Continuing the session
     session_start();
-	include('includes/connect.php');
+
+    // include section
+	include('includes/connect.php');   // for database connection
 
 	//user details
     $fullname = $_POST['first_name'].' '.$_POST['last_name'];

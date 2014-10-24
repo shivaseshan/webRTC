@@ -1,5 +1,5 @@
 <?php
-	session_start();
+	session_start(); //start the session
 	ob_start();
 	error_reporting(0);
 	$title = "Login Page";
@@ -16,7 +16,9 @@
 		$noLink = true; 
 		include("includes/navbar.php"); 
 	?>
-	<div class="container-fluid">
+
+	
+	<div class="container-fluid"> <!-- container for modal -->
 		<div class="row-fluid">
 			<div class="well col-md-4 col-md-offset-4 margin-top-05">
 				<form role="form" name="form1" action="login.php" method="post">
@@ -30,12 +32,13 @@
 					<div class="inline">
 						<button id="lgn-sbmt" class="btn btn-primary center" name="login" type="submit">Login</button>
 						<br><br>
+<<<<<<< HEAD
 						<!--<div class="fb-login-button" name="fb-login-button" id="fb-login-button" data-size="large" data-scope="email" data-show-faces="false" data-auto-logout-link="false">Sign in</div>-->
 <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" >
 </fb:login-button>
 
 						<br><br>
-					<!--	<div id="signinButton">
+				<!--	<div id="signinButton">
 						  <span
 						    class="g-signin"
 						    data-callback="signinCallback"
@@ -59,17 +62,17 @@
 					</div>
 					<div id="regnsuccess" class="top-inline"></div>
 					<?php
-					if($_GET['isUserExist']=="YES")
+					if($_GET['isUserExist']=="YES") // if user exists prints a prompt sayin it already exists
 					{
 						echo '<script type="text/javascript">document.getElementById("regnsuccess").innerHTML="User Exists.Try a different user name";</script>';
 					}	
 					if($_GET['isUserExist']=="NO")	
-					{
+					{ //if the user doesn't exist then he is asked to login with the credentials he signed up for
 						echo '<script type="text/javascript">document.getElementById("regnsuccess").innerHTML="Registration Successful.Login with the username and password";</script>';
 					}
 					?>	
 					<?php 
-					if(isset($_POST['login']))
+					if(isset($_POST['login'])) // this is to check if the user exists with that login id and password
 					{
 						$userdomain = $_POST['userdomain'];
 						$password = md5($_POST['pwd']);
@@ -88,12 +91,12 @@
 							header( 'Location: ./dashboard.php' ) ;
 						}
 						else
-						{
+						{ //If not successful, an error message is printed
 							echo '<script type="text/javascript">document.getElementById("loginErr").innerHTML="Invalid User Name or Password";</script>';
 						}
 					}
 					?>
-					<div class="modal fade" id="myModal">
+					<div class="modal fade" id="myModal"><!--Form for all the text boxes in the sign up modal-->
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -159,7 +162,7 @@
 									<?php
 										$isUserExist ="";
 										
-										if(isset($_POST['signup']))
+										if(isset($_POST['signup'])) //checks on click of signup if the user name exists. If it doesnt, sign in is done successfully
 										{
 											$result = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='{$_POST['uname']}'");
 											if (!$result)
