@@ -127,15 +127,6 @@ function statusChangeCallback(response) {
       }
     });
   }
-
-  $("#logout").on("click", function () {
-    function logout() {
-      FB.logout(function(response) {
-        alert("Facebook logout");
-            // Person is now logged out
-        });
-      }
-  });
    
   //Show loading Image
   function LodingAnimate() 
@@ -151,7 +142,10 @@ function statusChangeCallback(response) {
       $("#results").html(''); //reset element html
   }
 
+  // Logout User
   $('#logout').on('click', function() {
-if(response.status=== 'connected')
-        FB.logout(function(response){}); 
+    if(response.status=== 'connected')
+        FB.logout(function(response){
+          alert("Logging out fb user");
+        }); 
     });
