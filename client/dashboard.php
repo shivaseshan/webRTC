@@ -16,28 +16,6 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 	</head>
 	
 	<body>
-			<?php if($_SESSION['login_user'] == "") {
-				echo "Login with proper credentials";
-			}				
-			else {
-				$user_name=$_SESSION['login_user'];
-		      	$result_userid = mysqli_query($conn, "SELECT user_id FROM user  WHERE user_name='$user_name'");
-		      	while($row_userid = mysqli_fetch_array($result_userid)) {
-		      	 		$user_id=$row_userid['user_id'];	      
-		      	}
-				
-				if(isset($_POST['create_event'])) 
-				{
-					$s_date=$_POST['sdate'];
-					 $s_time=$_POST['stime'];
-					 $e_time=$_POST['etime']; 
-					 $event_name=$_POST['ename'];
-					$insert=mysqli_query($conn,"INSERT INTO `Events`(`event_name`,`start_date`,`start_time`, `end_time`, `user_id`, `event_description`, `event_room`) VALUES ('$event_name','$s_date','$s_time','$e_time','$user_id','{$_POST['edesc']}','$event_name')");
-					if (!$insert)
-						{
-						 	die('Invalid query: ' . mysql_error());
-						}
-					else
 		<!-- checking if the user came to the page by logging in or directly through url -->	
 		<?php
 			// checking if the user has a session id set or not

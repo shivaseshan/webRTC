@@ -32,13 +32,13 @@
 					<div class="inline">
 						<button id="lgn-sbmt" class="btn btn-primary center" name="login" type="submit">Login</button>
 						<br><br>
-<<<<<<< HEAD
 						<!--<div class="fb-login-button" name="fb-login-button" id="fb-login-button" data-size="large" data-scope="email" data-show-faces="false" data-auto-logout-link="false">Sign in</div>-->
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" >
-</fb:login-button>
+						<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" >
+						</fb:login-button>
 
 						<br><br>
-				<!--	<div id="signinButton">
+						<!--	
+						<div id="signinButton">
 						  <span
 						    class="g-signin"
 						    data-callback="signinCallback"
@@ -47,7 +47,8 @@
 						    data-requestvisibleactions="http://schema.org/AddAction"
 						    data-scope="https://www.googleapis.com/auth/plus.login">
 						  </span>
-						</div>-->
+						</div>
+						-->
 						<!-- <div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false"></div> -->
 					</div>	
 				</form>
