@@ -141,11 +141,3 @@ function statusChangeCallback(response) {
       $("#LoginButton").show(); //Show login button 
       $("#results").html(''); //reset element html
   }
-
-  // Logout User
-  $('#logout').on('click', function() {
-    if(response.status=== 'connected')
-        FB.logout(function(response){
-          alert("Logging out fb user");
-        }); 
-    });

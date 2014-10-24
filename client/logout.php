@@ -2,6 +2,12 @@
 	$title = "Logout Page";
   	include("includes/header.php");   // for html declaration 
 ?>
+	<script type="text/javascript">
+		if(response.status=== 'connected')
+	        FB.logout(function(response){
+	          alert("Logging out fb user");
+        }); 
+	</script>
 </head>
 
 <?php

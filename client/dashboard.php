@@ -13,7 +13,6 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 	include("includes/connect.php");	// for database connection
 ?>
 		<link rel="stylesheet" type="text/css" href="css/dashboard.css">
-		<script type="text/javascript" src="js/facebook.js"></script>
 	</head>
 	
 	<body>
