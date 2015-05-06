@@ -1,4 +1,3 @@
-
  <!-- This is the homepage for the website which will include pre-recorded videos of different categories-->
 <?php 
   // include section
@@ -12,10 +11,12 @@
 </head>
 
 <body>
+
   <?php
+   // Logout method
   if(isset($_GET["loggedout"]))
 {
-  session_start();
+  session_start(); 
 
 // Unset all of the session variables.
 $_SESSION = array();
