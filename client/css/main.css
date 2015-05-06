@@ -1,9 +1,16 @@
+
+
 video {
 	margin: 10px 10px 10px 10px;
 }
-
+#localVideo
+{
+    width: 25%;
+    height: 25%;
+    overflow: hidden;
+}
 #remoteVideo {
-    width: 100%;
+    width: auto;
     height: auto;
     overflow: hidden;
     max-height: 100%

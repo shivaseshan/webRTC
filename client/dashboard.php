@@ -5,7 +5,6 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 <?php
 	// Continuing the session
 	session_start();
-
 	// include section
 	$title = "Dashboard";
 	error_reporting(0);
@@ -32,16 +31,21 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 	      	}
 			
 			// creating the event
-			if(isset($_POST['create_event'])) 
+			if(isset($_POST["create_event"])) 
 			{
+
 				$s_date=$_POST['sdate'];
-				$s_time=$_POST['stime'];
-				$e_time=$_POST['etime']; 
+				$s_time=$s_date." ".$_POST['stime'];
+				$e_time=$s_date." ".$_POST['etime']; 
 				$event_name=$_POST['ename'];
-				$insert=mysqli_query($conn,"INSERT INTO `Events`(`event_name`,`start_date`,`start_time`, `end_time`, `user_id`, `event_description`, `event_room`) VALUES ('$event_name','$s_date','$s_time','$e_time','$user_id','{$_POST['edesc']}','$event_name')");
+				$event_description=$_POST['edesc'];
+				//echo "the values are".$s_date.$s_time.$e_time.$event_name.$event_description;
+
+				$insert=mysqli_query($conn,"INSERT INTO Events (event_name,start_time,end_time, user_id, event_description, event_room) VALUES ('$event_name','$s_time','$e_time','$user_id','$event_description','$event_name')");
 				if (!$insert)
 					{
-					 	die('Invalid query: ' . mysql_error());
+
+					 	die('Invalid query: ' . mysqli_error());
 					}
 				else
 				{
@@ -68,19 +72,25 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 			  	<br>
 			  	<p> Upcoming Events! </p>
 				<?php  	 
+				$date = new DateTime();
+					
+					$datetime=$date->format('Y-m-d H:i:s');
+					
 			        $result = mysqli_query($conn, "SELECT * FROM Events");
 			        if (!$result)
 			        {
 			          die('Invalid query: ' . mysqli_error());
 			        }
 
+			        	
 			        while($row = mysqli_fetch_array($result)) 
 			        {
 
-			        	if (time() < strtotime($row[start_time]))
+			        	
+			        	if(strtotime($row["start_time"])-strtotime($datetime)>0)
 			        	{
 				        	$room_redirect="./broadcast.php?room=".$row[event_room];
-					        echo "<div class=' col-md-6 well' >";
+					        echo "<div class=' col-xs-6 col-md-6 well' >";
 							echo "<a href=".$room_redirect.">".$row[event_name]." ".$row[start_date]." ".$row[start_time]."</a>";
 					        echo "</div>";
 			        	}
@@ -140,19 +150,7 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 										
 					
 															
-								<div class="row">
-										<div class="col-md-10">
-											<input  class="form-control" type="text" placeholder="Event Description" id="edesc" name="edesc" size="48">
-											<span id="fnameglyph" class=""></span>
-										</div>
-									</div>																								
-									
-									<div class="row">
-										<div class="col-md-10">
-											<input  class="form-control" type="text" placeholder="Event Description" id="edesc" name="edesc" size="48">
-											<span id="fnameglyph" class=""></span>
-										</div>
-									</div>
+								
 								</div>							
 								
 								<div class="modal-footer">
@@ -180,7 +178,7 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 				<div class="container">
 				    <div class="row">
 				    	<?php
-				    	$y=1;
+				    	$i=1;
 				      	$user_name=$_SESSION['login_user'];
 				      	$result_userid = mysqli_query($conn, "SELECT user_id FROM user WHERE user_name='$user_name'");
 				      	while($row_userid = mysqli_fetch_array($result_userid))
@@ -199,10 +197,10 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 
 				        $id="your_video".$i;
 
-				        	echo '<div class="col-md-4">';
+				        	echo '<div class="col-xs-6 col-md-3">';
 
 				        	echo '<div class="flex-video widescreen" style="margin: 0 auto;">';
-				        	echo '<video id='.$id.' width="320" height="240" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
+				        	echo '<video id='.$id.' width="240" height="160" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
 				        	echo '<source  src='.$src.' type="video/mp4">';
 				        	echo '</video>';
 				        	echo '</div>';
@@ -230,7 +228,7 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 			 	<div class="container">
 			   		<div class="row">
 				    	<?php
-				    	$y=1;
+				    	$i=1;
 				      	
 				        $result = mysqli_query($conn, "SELECT * FROM video ");
 				        if (!$result)
@@ -244,10 +242,10 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 
 				        $id="video_music".$i;
 
-				        	echo '<div class="col-md-4">';
+				        	echo '<div class="col-xs-6 col-md-3">';
 
 				        	echo '<div class="flex-video widescreen" style="margin: 0 auto;">';
-				        	echo '<video id='.$id.' width="320" height="240" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
+				        	echo '<video id='.$id.' width="240" height="160" poster="./images/video_poster.png" controls onclick="gofullscreen(this.id);"  >';
 				        	echo '<source  src='.$src.' type="video/mp4">';
 				        	echo '</video>';
 				        	echo '</div>';
@@ -262,7 +260,9 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 		 
 			<!-- User Profile Tab pane -->  
 		  	<div class="tab-pane" id="user-profile">
+
 			  	<?php
+
 			  		$username = $_SESSION['login_user'];
 			  		$result = mysqli_query($conn, "SELECT * FROM user WHERE user_name='$username'");
 
@@ -305,9 +305,11 @@ a) Dashboard b) Your videos c) Pre-recorded videos d) Update profile -->
 		<!-- Function to save the user's edited information into the database -->
 				  <?php
 				  	if (isset($_POST['save'])) {
+
 				  		$firstName = $_POST['first-name'];
 				  		$lastName = $_POST['last-name'];
 				  		$email = $_POST['email'];
+
 				  		if ( isset($_POST['password']) ) {
 				  			$password = md5($_POST['password']);
 				  			$result = mysqli_query($conn, "UPDATE user SET first_name='$firstName', last_name='$lastName', email_id='$email', password='$password' WHERE user_name='$username'");

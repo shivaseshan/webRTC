@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default " role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -11,11 +11,14 @@
             <a class="navbar-brand" href="./">webRTC</a>
         </div>
 
-        <div class="text-right">
+
+        <div class="text-right collapse navbar-collapse " id="bs-example-navbar-collapse-1">
             <?php 
                 if (!$noLink)
                     echo '<a href="./login.php" class="btn btn-default" >Login</a>';
             ?>
         </div>
+        
+       
     </div>
 </nav>

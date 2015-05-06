@@ -4,8 +4,8 @@
   "description": "Signalling server",
   "main": "server.js",
   "dependencies": {
-    "socket.io": "^1.1.0",
-    "node-static": "^0.7.4"
+    "node-static": "^0.7.6",
+    "socket.io": "^1.1.0"
   },
   "devDependencies": {},
   "scripts": {

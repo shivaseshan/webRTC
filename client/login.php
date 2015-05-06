@@ -1,9 +1,9 @@
 <?php
-	session_start(); //start the session
+	
 	ob_start();
 	error_reporting(0);
 	$title = "Login Page";
-	$_SESSION['login_user'] ="";
+	//$_SESSION['login_user'] ="";
 	include("includes/header.php"); 
 	include("includes/connect.php");
 ?>
@@ -88,7 +88,9 @@
 						$count2=mysqli_num_rows($result2);
 						if($count1==1 && $count2==1 && $password==$row[0])
 						{
+							session_start();
 							$_SESSION['login_user']=$userdomain;
+								
 							header( 'Location: ./dashboard.php' ) ;
 						}
 						else

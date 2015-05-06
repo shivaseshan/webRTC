@@ -1,13 +1,14 @@
-<?php
-    // Continuing the session
+<?php    
+ // Continuing the session
     session_start();
-
-    // if user is not logged in redirect to login page 
+     // if user is not logged in redirect to login page 
     // added in the end to give a way
     if($_SESSION['login_user'] == "") {
         header('Location: ./login.php');
     }
   
+
+   
     $title = "WebRTC client";
     include("includes/header.php");     // for database connection
 ?>

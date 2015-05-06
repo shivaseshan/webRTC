@@ -57,7 +57,7 @@ if (room === '') {
   room = location.pathname.substring(1);
 }
 
-var socket = io.connect('http://54.69.168.130:2013');
+var socket = io.connect('http://192.168.0.39:2013');
 
 if (room !== '') {
   console.log('Create or join room', room);
@@ -586,7 +586,7 @@ function PostBlob(audioblob, videoblob, fileName) {
   formData.append('audio-blob', audioblob);
   formData.append('video-blob', videoblob);
   formData.append('room-name',room);
- 
+
   xhr('combineAudioVideo.php', formData);
 }
 
@@ -594,12 +594,13 @@ function PostBlob(audioblob, videoblob, fileName) {
 function xhr(url, data) {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
-      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200 ) {
           //alert(xmlhttp.responseText);
       }
   };
   
   xmlhttp.open('POST', url);
+  
   xmlhttp.send(data);
 }
 
@@ -645,6 +646,7 @@ function stopRecording() {
           videoRecorder.stopRecording(function() {
             document.getElementById("stop-record").style.display = 'none';
             document.getElementById("start-record").style.display = 'inline-block';
+          
             PostBlob(audioRecorder.getBlob(), videoRecorder.getBlob(), fileName);
           });
           

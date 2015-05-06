@@ -72,22 +72,23 @@ include("includes/connect.php");    //for database connection
                 else {
                     $audioFile = 'videos/'.$_POST["filename"].'.wav';
                     $videoFile = 'videos/'.$_POST["filename"].'.webm';
-                    echo "really problem";
-                    $mergedFile = 'videos/'.$_POST['filename']. '-merged.webm';
-                    
+                    //echo "really problem";
+                    $mergedFile = 'videos/'.$_POST['filename']. '-merged.mp4';
+                
+
                     // ffmpeg depends on yasm
                     // libvpx depends on libvorbis
                     // libvorbis depends on libogg
                     // make sure that you're using newest ffmpeg version!
                     
                     if(!strrpos($CurrOS, "Windows")) {
-                        $cmd = '-i '.$audioFile.' -i '.$videoFile.' -map 0:0 -map 1:0 '.$mergedFile;
+                        $cmd = '-i '.$audioFile.' -i '.$videoFile.' -map 0:0 -map 1:0 -strict experimental '.$mergedFile;
                     }
                     else {
                         $cmd = ' -i '.$audioFile.' -i '.$videoFile.' -c:v mpeg4 -c:a vorbis -b:v 64k -b:a 12k -strict experimental '.$mergedFile;
                     }
                     
-                    exec('/root/bin/ffmpeg '.$cmd.' 2>&1', $out, $ret);
+                    exec('/usr/local/bin/ffmpeg '.$cmd.' 2>&1', $out, $ret);
                     if ($ret){
                         echo "There was a problem!\n";
                         print_r($cmd.'\n');
@@ -95,7 +96,7 @@ include("includes/connect.php");    //for database connection
                     } 
                     else {
                         echo "Ffmpeg successfully merged audi/video files into single WebM container!\n";
-                        $filevideo=$_POST["filename"]."-merged.webm";
+                        $filevideo=$_POST["filename"]."-merged.mp4";
 
                         // add the entry in the video table of the just created video
                         if(isset($_SESSION['login_user'])) {
@@ -110,4 +111,5 @@ include("includes/connect.php");    //for database connection
             }
         }
     }
+   
 ?>

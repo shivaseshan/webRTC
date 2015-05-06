@@ -30,3 +30,7 @@ function gofullscreen(id) {
     	}  
     	element.play();
 }
+$(document).ready(function()
+{
+  setTimeout(function(){ jQuery('.bg-success').fadeOut() }, 2000);
+});

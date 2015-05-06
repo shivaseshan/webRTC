@@ -1,6 +1,10 @@
 .margin-top-01 {
 	margin-top: 1%;
 }
+.margin-zero
+{
+	margin:0 0 0 0 ;
+}
 
 .form-control {
 	margin-top: 10px;

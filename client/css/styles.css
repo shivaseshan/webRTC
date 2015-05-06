@@ -1,3 +1,21 @@
+body
+{
+    background: #fffff ;
+}
+.container
+{
+	margin: 0;
+}
+
+.sidebar
+{
+	background: white;
+	border-radius: 0;
+	height: inherit;
+	display: block;
+}
+
+
 .margin-top-01 {
 	margin-top: 1%;
 }
